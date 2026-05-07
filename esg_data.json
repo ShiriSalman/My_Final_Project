@@ -1,0 +1,101 @@
+[
+  {
+    "company": "GreenTech GmbH",
+    "data": [
+      {
+        "year": 2021,
+        "environmental": {
+          "co2": 80,
+          "energy": 70
+        },
+        "social": {
+          "employees": 85,
+          "diversity": 75
+        },
+        "governance": {
+          "transparency": 90
+        }
+      },
+      {
+        "year": 2022,
+        "environmental": {
+          "co2": 85,
+          "energy": 75
+        },
+        "social": {
+          "employees": 88,
+          "diversity": 78
+        },
+        "governance": {
+          "transparency": 92
+        }
+      }
+    ]
+  },
+  {
+    "company": "EcoFuture AG",
+    "data": [
+      {
+        "year": 2021,
+        "environmental": {
+          "co2": 70,
+          "energy": 65
+        },
+        "social": {
+          "employees": 75,
+          "diversity": 70
+        },
+        "governance": {
+          "transparency": 85
+        }
+      },
+      {
+        "year": 2022,
+        "environmental": {
+          "co2": 72,
+          "energy": 68
+        },
+        "social": {
+          "employees": 78,
+          "diversity": 72
+        },
+        "governance": {
+          "transparency": 87
+        }
+      }
+    ]
+  },
+  {
+    "company": "FutureEnergy SE",
+    "data": [
+      {
+        "year": 2021,
+        "environmental": {
+          "co2": 60,
+          "energy": 62
+        },
+        "social": {
+          "employees": 68,
+          "diversity": 65
+        },
+        "governance": {
+          "transparency": 80
+        }
+      },
+      {
+        "year": 2022,
+        "environmental": {
+          "co2": 63,
+          "energy": 64
+        },
+        "social": {
+          "employees": 70,
+          "diversity": 67
+        },
+        "governance": {
+          "transparency": 82
+        }
+      }
+    ]
+  }
+]
