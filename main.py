@@ -23,7 +23,64 @@ print(data)
 
 # ------------------------------------------------------------------------------------------------
 
-# main menu:
+def analyze_company(company):
+    print(company["company"])
+
+    esg_scores_list = []
+
+    for entry in company["data"]:
+        environmental_values = entry["environmental"].values()
+        social_values = entry["social"].values() 
+        governance_values = entry["governance"].values()
+
+        environmental_score = sum(environmental_values) / len(environmental_values) 
+        social_score = sum(social_values) / len(social_values)
+        governance_score = sum(governance_values) / len(governance_values)
+
+        print("Year", entry["year"])
+        print("Environmental score: ", environmental_score)
+        print("Social score: ", social_score)
+        print("Governance score: ", governance_score)
+
+    esg_score = (
+         0.4 * environmental_score
+         + 0.3 * social_score
+         + 0.3 * governance_score
+    )  
+
+    esg_scores_list.append(esg_score)
+    
+    rating = ""
+    if esg_score >= 90:
+        rating = "Excellent"
+        print(f"Rating: {rating}")
+    elif esg_score >= 75:
+        rating = "Good"
+        print(f"Rating: {rating}")
+    elif esg_score >= 60:
+        rating = "Average"
+        print(f"Rating: {rating}")
+    else:
+        rating = "Needs Improvement"
+        print(f"Rating: {rating}")
+
+    trend = ""
+    if len(esg_scores_list) > 1:
+        if esg_scores_list[-1] > esg_scores_list[0]:
+            trend = "Improving"
+            print(f"Trend: {trend}")
+        elif esg_scores_list[-1] < esg_scores_list[0]:
+            trend = "Declining"
+            print(f"Trend: {trend}")
+        else:
+            trend = "Stable"
+            print(f"Trend: {trend}")
+    print()
+
+# ------------------------------------------------------------------------------------
+                                       # main menu:
+# ------------------------------------------------------------------------------------
+
 def menu(): 
     while True:
         print("=" * 25)
@@ -46,11 +103,11 @@ def menu():
 
         if choice == 1:
             print("+++ Analyse all Companies +++")
-            ...
-            # to be implemented
+            for item in data:
+                analyze_company(item)    # to be implemented
 
         elif choice == 2:
-            pass
+            ...
         elif choice == 3:
             pass
         elif choice == 4:
