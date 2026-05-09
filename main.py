@@ -24,11 +24,16 @@ print(data)
 # ------------------------------------------------------------------------------------------------
 
 def analyze_company(company):
+    print()
+    print("=" * 30)
     print(company["company"])
+    print("=" * 30)
+    print()
 
-    esg_scores_list = []
+    esg_scores_list = []     
 
     for entry in company["data"]:
+        
         environmental_values = entry["environmental"].values()
         social_values = entry["social"].values() 
         governance_values = entry["governance"].values()
@@ -38,9 +43,9 @@ def analyze_company(company):
         governance_score = sum(governance_values) / len(governance_values)
 
         print("Year", entry["year"])
-        print("Environmental score: ", environmental_score)
-        print("Social score: ", social_score)
-        print("Governance score: ", governance_score)
+        print(f"Environmental score: {environmental_score}")
+        print(f"Social score: {social_score}")
+        print(f"Governance score: {governance_score}")
 
     esg_score = (
          0.4 * environmental_score
@@ -49,7 +54,8 @@ def analyze_company(company):
     )  
 
     esg_scores_list.append(esg_score)
-    
+    print("Overall ESG Score: ", round(esg_score, 2))
+
     rating = ""
     if esg_score >= 90:
         rating = "Excellent"
@@ -63,6 +69,9 @@ def analyze_company(company):
     else:
         rating = "Needs Improvement"
         print(f"Rating: {rating}")
+    print()
+    print("-" * 30)
+    print()
 
     trend = ""
     if len(esg_scores_list) > 1:
