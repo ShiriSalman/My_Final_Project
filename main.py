@@ -33,7 +33,7 @@ def analyze_company(company):
     esg_scores_list = []     
 
     for entry in company["data"]:
-        
+
         environmental_values = entry["environmental"].values()
         social_values = entry["social"].values() 
         governance_values = entry["governance"].values()
@@ -47,31 +47,31 @@ def analyze_company(company):
         print(f"Social score: {social_score}")
         print(f"Governance score: {governance_score}")
 
-    esg_score = (
-         0.4 * environmental_score
-         + 0.3 * social_score
-         + 0.3 * governance_score
-    )  
+        esg_score = (
+            0.4 * environmental_score
+            + 0.3 * social_score
+            + 0.3 * governance_score
+        )  
 
-    esg_scores_list.append(esg_score)
-    print("Overall ESG Score: ", round(esg_score, 2))
+        esg_scores_list.append(esg_score)
+        print("Overall ESG Score: ", round(esg_score, 2))
 
-    rating = ""
-    if esg_score >= 90:
-        rating = "Excellent"
-        print(f"Rating: {rating}")
-    elif esg_score >= 75:
-        rating = "Good"
-        print(f"Rating: {rating}")
-    elif esg_score >= 60:
-        rating = "Average"
-        print(f"Rating: {rating}")
-    else:
-        rating = "Needs Improvement"
-        print(f"Rating: {rating}")
-    print()
-    print("-" * 30)
-    print()
+        rating = ""
+        if esg_score >= 90:
+            rating = "Excellent"
+            print(f"Rating: {rating}")
+        elif esg_score >= 75:
+            rating = "Good"
+            print(f"Rating: {rating}")
+        elif esg_score >= 60:
+            rating = "Average"
+            print(f"Rating: {rating}")
+        else:
+            rating = "Needs Improvement"
+            print(f"Rating: {rating}")
+        print()
+        print("-" * 30)
+        print()
 
     trend = ""
     if len(esg_scores_list) > 1:
@@ -107,7 +107,7 @@ def menu():
         try:
             choice = int(input("\nPlease choose an option: "))
         except ValueError:
-            print("Invalid input, please enter  number")    
+            print("Invalid input, please enter a number")    
             continue
 
         if choice == 1:
@@ -116,7 +116,17 @@ def menu():
                 analyze_company(item)    # to be implemented
 
         elif choice == 2:
-            ...
+            for i, item in enumerate(data, start = 1):
+                print(i, item["company"])         # show a list of available companies to choos from!
+                
+            company_number = int(input("\nPlease choose a company number to analyze: "))
+            if 1 <= company_number <= len(data):
+                index = company_number - 1
+                selected_company = data[index]
+                analyze_company(selected_company)
+            else:
+                print("Invalid number, please try again!")   
+
         elif choice == 3:
             pass
         elif choice == 4:
