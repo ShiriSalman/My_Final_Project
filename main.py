@@ -34,25 +34,7 @@ def analyze_company(company):
 
     for entry in company["data"]:
 
-        environmental_values = entry["environmental"].values()
-        social_values = entry["social"].values() 
-        governance_values = entry["governance"].values()
-
-        environmental_score = sum(environmental_values) / len(environmental_values) 
-        social_score = sum(social_values) / len(social_values)
-        governance_score = sum(governance_values) / len(governance_values)
-
-        print("Year", entry["year"])
-        print(f"Environmental score: {environmental_score}")
-        print(f"Social score: {social_score}")
-        print(f"Governance score: {governance_score}")
-
-        esg_score = (
-            0.4 * environmental_score
-            + 0.3 * social_score
-            + 0.3 * governance_score
-        )  
-
+        env, soc, gov, esg_score = calculate_esg_score(entry)
         esg_scores_list.append(esg_score)
         print("Overall ESG Score: ", round(esg_score, 2))
 
@@ -86,6 +68,32 @@ def analyze_company(company):
             print(f"Trend: {trend}")
     print()
 
+def calculate_esg_score(entry):
+        
+        environmental_values = entry["environmental"].values()
+        social_values = entry["social"].values() 
+        governance_values = entry["governance"].values()
+
+        environmental_score = sum(environmental_values) / len(environmental_values) 
+        social_score = sum(social_values) / len(social_values)
+        governance_score = sum(governance_values) / len(governance_values)
+
+        print("Year", entry["year"])
+        print(f"Environmental score: {environmental_score}")
+        print(f"Social score: {social_score}")
+        print(f"Governance score: {governance_score}")
+
+        esg_score = (
+            0.4 * environmental_score
+            + 0.3 * social_score
+            + 0.3 * governance_score
+        )  
+        return environmental_score, social_score, governance_score, esg_score
+
+# def ranking():
+
+
+
 # ------------------------------------------------------------------------------------
                                        # main menu:
 # ------------------------------------------------------------------------------------
@@ -113,7 +121,7 @@ def menu():
         if choice == 1:
             print("+++ Analyse all Companies +++")
             for item in data:
-                analyze_company(item)    # to be implemented
+                analyze_company(item) 
 
         elif choice == 2:
             for i, item in enumerate(data, start = 1):
@@ -128,7 +136,8 @@ def menu():
                 print("Invalid number, please try again!")   
 
         elif choice == 3:
-            pass
+           # ranking()   
+            ...
         elif choice == 4:
             break
         else:
