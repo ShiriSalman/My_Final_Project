@@ -19,7 +19,7 @@ except FileNotFoundError:
 except Exception as e:
     print(f"Unexpected error: {e}")
 
-print(data)
+# print(data)
 
 # ------------------------------------------------------------------------------------------------
 
@@ -90,10 +90,18 @@ def calculate_esg_score(entry):
         )  
         return environmental_score, social_score, governance_score, esg_score
 
-# def ranking():
+def ranking():
+    ranking_list = []
+    for company in data:
+        last_entry = company["data"][-1]  # last year
 
-
-
+        env, soc, gov, esg_score = calculate_esg_score(last_entry)
+        ranking_list.append((company["company"], esg_score))
+    ranking_list.sort(key = lambda x: x[1], reverse = True)
+    print("\n== Company Ranking ===")   
+    for i, (name, score) in enumerate(ranking_list, start = 1):
+     print(f"{i}. {name:} --> {score:}")
+     
 # ------------------------------------------------------------------------------------
                                        # main menu:
 # ------------------------------------------------------------------------------------
@@ -136,8 +144,8 @@ def menu():
                 print("Invalid number, please try again!")   
 
         elif choice == 3:
-           # ranking()   
-            ...
+           ranking()   
+        
         elif choice == 4:
             break
         else:
