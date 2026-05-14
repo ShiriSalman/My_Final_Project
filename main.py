@@ -3,6 +3,9 @@
 from pathlib import Path
 import json
 
+from analyzer import Company
+from analyzer import Analyzer
+
 # --------------- read ESG data from esg_data.json --------------------
 
 FILE_NAME = "esg_data.json"
@@ -19,7 +22,16 @@ except FileNotFoundError:
 except Exception as e:
     print(f"Unexpected error: {e}")
 
-# print(data)
+print()
+
+# create a list of company objects:
+
+company_list = []
+for item in data:
+    new_company = Company(item["company"], item["data"])
+    company_list.append(new_company)   
+
+analyzer = Analyzer(company_list)                       
 
 # ------------------------------------------------------------------------------------------------
 
@@ -38,7 +50,6 @@ def analyze_company(company):
         esg_scores_list.append(esg_score)
         print("Overall ESG Score: ", round(esg_score, 2))
 
-        rating = ""
         if esg_score >= 90:
             rating = "Excellent"
             print(f"Rating: {rating}")
@@ -55,7 +66,6 @@ def analyze_company(company):
         print("-" * 30)
         print()
 
-    trend = ""
     if len(esg_scores_list) > 1:
         if esg_scores_list[-1] > esg_scores_list[0]:
             trend = "Improving"
