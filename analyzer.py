@@ -42,6 +42,11 @@ class Analyzer:
             print("-" * 30)
             print()
 
+            print("Year", entry["year"])
+            print(f"Environmental score: {env}")
+            print(f"Social score: {soc}")
+            print(f"Governance score: {gov}")
+
         if len(esg_scores_list) > 1:
             if esg_scores_list[-1] > esg_scores_list[0]:
                 trend = "Improving"
@@ -55,7 +60,7 @@ class Analyzer:
         print()
             
 # ------------------------------------------------------------------------------------
-
+    @staticmethod
     def calculate_esg_score(entry):
 
         environmental_values = entry["environmental"].values()
@@ -66,11 +71,6 @@ class Analyzer:
         social_score = sum(social_values) / len(social_values)
         governance_score = sum(governance_values) / len(governance_values)
 
-        print("Year", entry["year"])
-        print(f"Environmental score: {environmental_score}")
-        print(f"Social score: {social_score}")
-        print(f"Governance score: {governance_score}")
-
         esg_score = (
             0.4 * environmental_score
             + 0.3 * social_score
@@ -79,7 +79,7 @@ class Analyzer:
 
         return environmental_score, social_score, governance_score, esg_score
 
-
+# --------------------------------------------------------------------------------------------------
     def ranking(self):
 
         ranking_list = []

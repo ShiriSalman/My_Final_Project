@@ -35,7 +35,7 @@ analyzer = Analyzer(company_list)
 
 # ------------------------------------------------------------------------------------------------
 
-def analyze_company(company):
+""" def analyze_company(company):
     print()
     print("=" * 30)
     print(company["company"])
@@ -76,9 +76,9 @@ def analyze_company(company):
         else:
             trend = "Stable"
             print(f"Trend: {trend}")
-    print()
+    print() """
 
-def calculate_esg_score(entry):
+""" def calculate_esg_score(entry):
         
         environmental_values = entry["environmental"].values()
         social_values = entry["social"].values() 
@@ -98,7 +98,7 @@ def calculate_esg_score(entry):
             + 0.3 * social_score
             + 0.3 * governance_score
         )  
-        return environmental_score, social_score, governance_score, esg_score
+        return environmental_score, social_score, governance_score, esg_score """
 
 """ def ranking():
     ranking_list = []
@@ -138,18 +138,18 @@ def menu():
 
         if choice == 1:
             print("+++ Analyse all Companies +++")
-            for item in data:
-                analyze_company(item) 
+            for company in company_list:
+                analyzer.analyze_company(company) 
 
         elif choice == 2:
-            for i, item in enumerate(data, start = 1):
-                print(i, item["company"])         # show a list of available companies to choos from!
+            for i, company in enumerate(company_list, start = 1):
+                print(i, company.name)         # show a list of available companies to choos from!
                 
             company_number = int(input("\nPlease choose a company number to analyze: "))
             if 1 <= company_number <= len(data):
                 index = company_number - 1
-                selected_company = data[index]
-                analyze_company(selected_company)
+                selected_company = company_list[index]
+                analyzer.analyze_company(selected_company)
             else:
                 print("Invalid number, please try again!")   
 
@@ -160,4 +160,5 @@ def menu():
             break
         else:
             print("Invalid input, please try again")   
+            
 menu()
