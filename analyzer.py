@@ -92,6 +92,6 @@ class Analyzer:
             ranking_list.append((company.name, esg_score))
             ranking_list.sort(key = lambda x: x[1], reverse = True)
 
-            print("\n== Company Ranking ===")   
-            for i, (name, score) in enumerate(ranking_list, start = 1):
-             print(f"{i}. {name:} --> {score:}")
+        print("\n== Company Ranking ===\n")   
+        for i, (name, score) in enumerate(ranking_list, start = 1):
+            print(f"{i}. {name:} --> {score:}")
