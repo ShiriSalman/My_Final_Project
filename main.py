@@ -66,7 +66,12 @@ def menu():
             for i, company in enumerate(company_list, start = 1):
                 print(i, company.name)         # show a list of available companies to choos from!
                 
-            company_number = int(input("\nPlease choose a company number to analyze: "))
+            try:
+                company_number = int(input("\nPlease choose a company number to analyze: "))
+            except ValueError:
+                print("Invalid input, please enter a number!")
+                continue
+            
             if 1 <= company_number <= len(data):
                 index = company_number - 1
                 selected_company = company_list[index]
