@@ -2,6 +2,7 @@ import tkinter as tk
 
 from pathlib import Path
 import json
+from tkinter import ttk
 
 from analyzer import Company
 from analyzer import Analyzer
@@ -42,7 +43,7 @@ def show_ranking():
 #-------------------------------------- GUI window --------
 root = tk.Tk()  # initialize root widget
 root.title("ESG Data Analyzer")
-root.geometry("1000x600")
+root.geometry("1200x700")
 root.configure(background="#f4f7f5")
 
 # ------------ sidebar right -------------------------
@@ -126,10 +127,75 @@ refresh_data_button = tk.Button(sidebar,
 refresh_data_button.pack(pady=10)
 
 # -------------------- left side ---------------------------------
-main_frame = tk.Frame(root, bg="#d2eddb")
+main_frame = tk.Frame(root, bg="#ffffff")
 main_frame.pack(side="right", fill="both", expand=True)
 
-content_frame = tk.Frame(main_frame, bg="#f4f7f5")
+main_title = tk.Label(main_frame, text="Dashboard", bg="#ffffff", font=("Arial", 20, "bold"))
+main_title.pack(pady=20)
+
+company_names = [company.name for company in company_list]
+company_dropdown = ttk.Combobox(
+    main_frame,
+    values=company_names,
+    state="readonly",
+    font=("Arial", 12),
+    width=20
+)
+company_dropdown.pack(pady=10)
+company_dropdown.current(0)
+
+# -------------------------- Cards -----------------------
+cards_frame = tk.Frame(main_frame, bg="#ffffff")
+cards_frame.pack(pady=15)
+
+# Environmental card:
+env_card = tk.Frame(cards_frame, bg="white", width=170, height=100, relief="solid", borderwidth=1)
+env_card.pack(side="left", padx=10)
+env_card.pack_propagate(False)
+env_title = tk.Label(env_card, text="Environmental", bg="white", font=("Arial", 12, "bold"))
+env_title.pack(pady=10)
+env_score = tk.Label(env_card, text="0.00", bg="white", fg="#2e7d32", font=("Arial", 24, "bold"))   
+env_score.pack()
+
+# social card:
+soc_card = tk.Frame(cards_frame, bg="white", width=170, height=100, relief="solid", borderwidth=1)
+soc_card.pack(side="left", padx=10)
+soc_card.pack_propagate(False)
+soc_title = tk.Label(soc_card, text="Social", bg="white", font=("Arial", 12, "bold"))
+soc_title.pack(pady=10)
+soc_score = tk.Label(soc_card, text="0.00", bg="white", fg="#2e7d32", font=("Arial", 24, "bold"))
+soc_score.pack()
+
+# Governance card:
+gov_card = tk.Frame(cards_frame, bg="white", width=170, height=100, relief="solid", borderwidth=1)
+gov_card.pack(side="left", padx=10)
+gov_card.pack_propagate(False)
+gov_title = tk.Label(gov_card, text="Governance", bg="white", font=("Arial", 12, "bold"))
+gov_title.pack(pady=10)
+gov_score = tk.Label(gov_card, text="0.00", bg="white", fg="#2e7d32", font=("Arial", 24, "bold"))
+gov_score.pack()
+
+# ESG Total card:
+total_card = tk.Frame(cards_frame, bg="white", width=170, height=100, relief="solid", borderwidth=1)
+total_card.pack(side="left", padx=10)
+total_card.pack_propagate(False)
+total_title = tk.Label(total_card, text="ESG Total", bg="white", font=("Arial", 12, "bold"))
+total_title.pack(pady=10)
+total_score = tk.Label(total_card, bg="white", fg="#2e7d32", font=("Arial", 24, "bold"))
+total_score.pack()
+
+# Trend card:
+trend_card = tk.Frame(cards_frame, bg="white", width=170, height=100, relief="solid", borderwidth=1)
+trend_card.pack(side="left", padx=10)
+trend_card.pack_propagate(False)
+trend_title = tk.Label(trend_card, text="Trend", bg="white", font=("Arial", 12, "bold"))
+trend_title.pack(pady=10)
+trend_score = tk.Label(trend_card, bg="white", fg="#2e7d32", font=("Arial", 18, "bold"))
+trend_score.pack()
+
+# -------------------------------------------------------------
+
+content_frame = tk.Frame(main_frame, bg="#ffffff")
 content_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
 company_details_frame = tk.Frame(content_frame, bg="white", width=340, relief="solid", borderwidth=1)
@@ -158,6 +224,7 @@ output_text.tag_configure(
     foreground="#2e7d32"
 )
 output_text.pack(pady=20)
+# ------------------------------------------------------------
 
 
 
