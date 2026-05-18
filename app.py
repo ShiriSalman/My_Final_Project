@@ -33,6 +33,11 @@ for item in data:
 
 analyzer = Analyzer(company_list)
 
+# --------------------------------- functions to show results --------------------------
+def show_ranking():
+    output_text.delete("1.0", tk.END)
+    result = analyzer.ranking()
+    output_text.insert(tk.END, result)
 
 #-------------------------------------- GUI window --------
 root = tk.Tk()  # initialize root widget
@@ -41,6 +46,7 @@ root.geometry("1000x600")
 root.configure(background="#f4f7f5")
 
 # ------------ sidebar right -------------------------
+
 sidebar = tk.Frame(root, bg="#ffffff", width=260)
 sidebar.pack(side="left", fill="y")
 sidebar.pack_propagate(False)  # don't ignore
@@ -86,7 +92,8 @@ show_ranking_button = tk.Button(sidebar,
     activebackground="#b0c1e7",
     activeforeground="white",
     relief="flat",
-    bd=0
+    bd=0,
+    command=show_ranking
 )
 show_ranking_button.pack(pady=10)
 
@@ -118,10 +125,39 @@ refresh_data_button = tk.Button(sidebar,
 )
 refresh_data_button.pack(pady=10)
 
-# -----------------------------------------------------
+# -------------------- left side ---------------------------------
 main_frame = tk.Frame(root, bg="#d2eddb")
 main_frame.pack(side="right", fill="both", expand=True)
 
+content_frame = tk.Frame(main_frame, bg="#f4f7f5")
+content_frame.pack(fill="both", expand=True, padx=20, pady=20)
+
+company_details_frame = tk.Frame(content_frame, bg="white", width=340, relief="solid", borderwidth=1)
+company_details_frame.pack(side="left", fill="y", padx=(0, 10))
+company_details_frame.pack_propagate(False)
+
+
+company_ranking_frame = tk.Frame(content_frame, bg="white", width=320, relief="solid", borderwidth=1)
+company_ranking_frame.pack(side="left", fill="y", padx=(0, 10))
+company_ranking_frame.pack_propagate(False)
+
+# ---------------------- output ------------------------
+
+output_text = tk.Text(
+    company_details_frame,
+    height=20,
+    width=70,
+    font=("Consolas", 11),
+    bg="white",
+    fg="#1f2933"
+)
+
+output_text.tag_configure(
+    "company",
+    font=("Arial", 16, "bold"),
+    foreground="#2e7d32"
+)
+output_text.pack(pady=20)
 
 
 

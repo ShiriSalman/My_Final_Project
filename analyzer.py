@@ -83,7 +83,7 @@ class Analyzer:
     def ranking(self):
 
         ranking_list = []
-
+        output = ""
         for company in self.company_list:
             last_entry = company.data[-1]  # last year
 
@@ -92,6 +92,8 @@ class Analyzer:
             ranking_list.append((company.name, esg_score))
             ranking_list.sort(key = lambda x: x[1], reverse = True)
 
-        print("\n== Company Ranking ===\n")   
+        output += "\n=== Company Ranking ===\n"
+        output += "\n"   
         for i, (name, score) in enumerate(ranking_list, start = 1):
-            print(f"{i}. {name:} --> {score:}")
+            output += f"{i}. {name:<20} --> {score:.2f}\n"
+        return output    
