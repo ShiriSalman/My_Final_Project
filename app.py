@@ -40,7 +40,29 @@ def show_ranking():
     result = analyzer.ranking()
     output_text.insert(tk.END, result)
 
+def show_selected_company():
+    selected_name = company_dropdown.get()
+
+    for company in company_list:
+        if company.name == selected_name:
+
+            output_text.delete("1.0", tk.END)  
+
+            output_text.insert(tk.END, f"{company.name}\n", "company")
+
+            # show last year esg values in cards 
+            last_entry = company.data[-1]
+            
+            env, soc, gov, latest_esg_score = Analyzer.calculate_esg_score(last_entry)
+
+            env_score.config(text=f"{env:.2f}")
+            soc_score.config(text=f"{soc:.2f}")
+            gov_score.config(text=f"{gov:.2f}")
+            total_score.config(text=f"{latest_esg_score:.2f}")      
+ 
+
 #-------------------------------------- GUI window --------
+
 root = tk.Tk()  # initialize root widget
 root.title("ESG Data Analyzer")
 root.geometry("1200x700")
@@ -65,7 +87,8 @@ analyze_button = tk.Button(sidebar,
     activebackground="#b0c1e7",
     activeforeground="white",
     relief="flat",
-    bd=0
+    bd=0,
+    command=show_selected_company
 )
 analyze_button.pack(pady=10)
 
@@ -193,7 +216,7 @@ trend_title.pack(pady=10)
 trend_score = tk.Label(trend_card, bg="white", fg="#2e7d32", font=("Arial", 18, "bold"))
 trend_score.pack()
 
-# -------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------
 
 content_frame = tk.Frame(main_frame, bg="#ffffff")
 content_frame.pack(fill="both", expand=True, padx=20, pady=20)
@@ -201,13 +224,22 @@ content_frame.pack(fill="both", expand=True, padx=20, pady=20)
 company_details_frame = tk.Frame(content_frame, bg="white", width=340, relief="solid", borderwidth=1)
 company_details_frame.pack(side="left", fill="y", padx=(0, 10))
 company_details_frame.pack_propagate(False)
+company_details_title = tk.Label(company_details_frame, text="Company Details", bg="white", font=("Arial", 14, "bold"))
+company_details_title.pack(anchor="w", padx=10, pady=10)
 
-
-company_ranking_frame = tk.Frame(content_frame, bg="white", width=320, relief="solid", borderwidth=1)
+""" company_ranking_frame = tk.Frame(content_frame, bg="white", width=320, relief="solid", borderwidth=1)
 company_ranking_frame.pack(side="left", fill="y", padx=(0, 10))
-company_ranking_frame.pack_propagate(False)
+company_ranking_frame.pack_propagate(False) """
 
-# ---------------------- output ------------------------
+# --------------- Chart Frame -------------------
+
+chart_frame = tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
+chart_frame.pack(side="right", fill="both", expand=True)
+
+chart_title = tk.Label(chart_frame, text="Charts / Comparison", bg="white", font=("Arial", 14, "bold"))
+chart_title.pack(pady=10)
+
+# ---------------------- output ---------------------------------------------------------------------
 
 output_text = tk.Text(
     company_details_frame,
@@ -224,6 +256,7 @@ output_text.tag_configure(
     foreground="#2e7d32"
 )
 output_text.pack(pady=20)
+
 # ------------------------------------------------------------
 
 
