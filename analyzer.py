@@ -10,54 +10,42 @@ class Analyzer:
     def __init__(self, company_list):
         self.company_list = company_list
 
-    def analyze_company(self, company):
+    @staticmethod
+    def analyze_company(company):
 
-        print()
-        print("=" * 30)
-        print(company.name)
-        print("=" * 30)
-        print()
+        result = ""
+        result += "\n"
+        result += f"=" * 30 + "\n"
+        result += f"{company.name}\n"
+        result += f"=" * 30 + "\n"
 
-        esg_scores_list = []     
+        esg_scores_list = []
 
         for entry in company.data:
 
             env, soc, gov, esg_score = Analyzer.calculate_esg_score(entry)
             esg_scores_list.append(esg_score)
-            print("Overall ESG Score: ", round(esg_score, 2))
 
-            if esg_score >= 90:
-                rating = "Excellent"
-                print(f"Rating: {rating}")
-            elif esg_score >= 75:
-                rating = "Good"
-                print(f"Rating: {rating}")
-            elif esg_score >= 60:
-                rating = "Average"
-                print(f"Rating: {rating}")
-            else:
-                rating = "Needs Improvement"
-                print(f"Rating: {rating}")
-            print()
-            print("-" * 30)
-            print()
+            rating = Analyzer.get_rating(esg_score)
 
-            print("Year", entry["year"])
-            print(f"Environmental score: {env}")
-            print(f"Social score: {soc}")
-            print(f"Governance score: {gov}")
+            result += "\n"
 
+            result += f"Year: {entry['year']}\n"
+            result += f"=" * 30 + "\n"
+            result += f"{'Environmental Score':<22}: {env:.2f}\n"
+            result += f"{'Social Score':<22}: {soc:.2f}\n"
+            result += f"{'Governance Score':<22}: {gov:.2f}\n"
+            result += f"{'Overall ESG Score':<22}: {esg_score:.2f}\n"
+            result += f"{'Rating':<22} {rating}\n"
+
+        trend = ""
         if len(esg_scores_list) > 1:
-            if esg_scores_list[-1] > esg_scores_list[0]:
-                trend = "Improving"
-                print(f"Trend: {trend}")
-            elif esg_scores_list[-1] < esg_scores_list[0]:
-                trend = "Declining"
-                print(f"Trend: {trend}")
-            else:
-                trend = "Stable"
-                print(f"Trend: {trend}")
-        print()
+            trend = Analyzer.get_trend(company.data)
+
+        result += f"=" * 30 + "\n"
+        result += f"Trend: {trend}\n"
+        result += "\n"
+        return result
             
 # ------------------------------------------------------------------------------------
     @staticmethod
@@ -97,3 +85,32 @@ class Analyzer:
         for i, (name, score) in enumerate(ranking_list, start = 1):
             output += f"{i}. {name:<20} --> {score:.2f}\n"
         return output    
+# ----------------------------------------------
+    @staticmethod
+    def get_trend(company_data):
+        first_entry = company_data[0]
+        last_entry = company_data[-1]
+
+        _, _, _, first_score = Analyzer.calculate_esg_score(first_entry)
+        _, _, _, last_score = Analyzer.calculate_esg_score(last_entry)
+
+        if last_score > first_score:
+            return "Improving"
+        elif last_score < first_score:
+            return "Declining"
+        else:
+            return "Stable"
+    
+# --------------------------------------------------    
+    @staticmethod
+    def get_rating(esg_score):
+
+        if esg_score >= 90:
+            rating = "Excellent"
+        elif esg_score >= 75:
+            rating = "Good"
+        elif esg_score >= 60:
+            rating = "Average"
+        else:
+            rating = "Needs Improvement"
+        return rating

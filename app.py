@@ -58,8 +58,23 @@ def show_selected_company():
             env_score.config(text=f"{env:.2f}")
             soc_score.config(text=f"{soc:.2f}")
             gov_score.config(text=f"{gov:.2f}")
-            total_score.config(text=f"{latest_esg_score:.2f}")      
- 
+            total_score.config(text=f"{latest_esg_score:.2f}")  
+
+            # Trend Card:
+            if len(company.data) > 1:
+                first_entry = company.data[0]
+                _, _, _, first_score = Analyzer.calculate_esg_score(first_entry)
+
+                trend = Analyzer.get_trend(company.data)
+
+                if trend == "Improving":
+                    trend_score.config(text=trend, fg="green")
+
+                elif trend == "Declining":
+                    trend_score.config(text=trend, fg="red")
+
+                else:
+                    trend_score.config(text=trend, fg="orange")
 
 #-------------------------------------- GUI window --------
 

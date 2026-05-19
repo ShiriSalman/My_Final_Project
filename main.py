@@ -60,7 +60,7 @@ def menu():
         if choice == 1:
             print("+++ Analyse all Companies +++")
             for company in company_list:
-                analyzer.analyze_company(company) 
+                print(analyzer.analyze_company(company)) 
 
         elif choice == 2:
             for i, company in enumerate(company_list, start = 1):
@@ -75,12 +75,13 @@ def menu():
             if 1 <= company_number <= len(data):
                 index = company_number - 1
                 selected_company = company_list[index]
-                analyzer.analyze_company(selected_company)
+                print(analyzer.analyze_company(selected_company))
             else:
                 print("Invalid number, please try again!")   
 
         elif choice == 3:
-           analyzer.ranking()   
+           ranking = analyzer.ranking()
+           print(ranking)  
         
         elif choice == 4:
             break
