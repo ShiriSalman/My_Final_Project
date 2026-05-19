@@ -46,7 +46,7 @@ def show_selected_company():
     for company in company_list:
         if company.name == selected_name:
 
-            output_text.delete("1.0", tk.END)  
+            output_text.delete("1.0", tk.END)  # clear output
 
             output_text.insert(tk.END, f"{company.name}\n", "company")
 
@@ -75,7 +75,29 @@ def show_selected_company():
 
                 else:
                     trend_score.config(text=trend, fg="orange")
+            # output for every year                 
+            for entry in company.data:
+                env, soc, gov, esg_score = Analyzer.calculate_esg_score(entry)
+                rating = Analyzer.get_rating(esg_score)
 
+                if rating == "Excellent":
+                    tag = "excellent"
+                elif rating == "Good":
+                    tag = "good"
+                elif rating == "Average":
+                    tag = "average"
+                else:
+                    tag = "bad"
+
+                output_text.insert(tk.END, f"\nYear: {entry['year']}\n", "year")
+                output_text.insert(tk.END, "=" * 30 + "\n", "line")
+                output_text.insert(tk.END, f"Environmental Score : {env:.2f}\n")
+                output_text.insert(tk.END, f"Social Score        : {soc:.2f}\n")
+                output_text.insert(tk.END, f"Governance Score    : {gov:.2f}\n")
+                output_text.insert(tk.END, f"Overall ESG Score   : {esg_score:.2f}\n")
+                output_text.insert(tk.END, f"Rating              : {rating}\n", tag)
+
+            break
 #-------------------------------------- GUI window --------
 
 root = tk.Tk()  # initialize root widget

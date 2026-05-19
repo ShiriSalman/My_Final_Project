@@ -5,95 +5,103 @@
       {
         "year": 2021,
         "environmental": {
-          "co2": 80,
-          "energy": 70
+          "co2_reduction": 65,
+          "energy_efficiency": 70
         },
         "social": {
-          "employees": 85,
-          "diversity": 75
+          "employee_satisfaction": 72,
+          "diversity_index": 68
         },
         "governance": {
-          "transparency": 90
+          "board_independence": 80,
+          "transparency": 82
         }
       },
       {
         "year": 2022,
         "environmental": {
-          "co2": 85,
-          "energy": 75
+          "co2_reduction": 80,
+          "energy_efficiency": 85
         },
         "social": {
-          "employees": 88,
-          "diversity": 78
+          "employee_satisfaction": 84,
+          "diversity_index": 82
         },
         "governance": {
+          "board_independence": 90,
           "transparency": 92
         }
       }
     ]
   },
+
   {
     "company": "EcoFuture AG",
     "data": [
       {
         "year": 2021,
         "environmental": {
-          "co2": 70,
-          "energy": 65
+          "co2_reduction": 70,
+          "energy_efficiency": 75
         },
         "social": {
-          "employees": 75,
-          "diversity": 70
+          "employee_satisfaction": 80,
+          "diversity_index": 70
         },
         "governance": {
-          "transparency": 85
+          "board_independence": 85,
+          "transparency": 89
         }
       },
       {
         "year": 2022,
         "environmental": {
-          "co2": 72,
-          "energy": 68
+          "co2_reduction": 70,
+          "energy_efficiency": 75
         },
         "social": {
-          "employees": 78,
-          "diversity": 72
+          "employee_satisfaction": 80,
+          "diversity_index": 70
         },
         "governance": {
-          "transparency": 87
+          "board_independence": 85,
+          "transparency": 89
         }
       }
     ]
   },
+
   {
     "company": "FutureEnergy SE",
     "data": [
       {
         "year": 2021,
         "environmental": {
-          "co2": 60,
-          "energy": 62
+          "co2_reduction": 85,
+          "energy_efficiency": 88
         },
         "social": {
-          "employees": 68,
-          "diversity": 65
+          "employee_satisfaction": 82,
+          "diversity_index": 80
         },
         "governance": {
-          "transparency": 80
+          "board_independence": 91,
+          "transparency": 93
         }
       },
       {
         "year": 2022,
         "environmental": {
-          "co2": 63,
-          "energy": 64
+          "co2_reduction": 55,
+          "energy_efficiency": 60
         },
         "social": {
-          "employees": 70,
-          "diversity": 67
+          "employee_satisfaction": 58,
+          "diversity_index": 56
         },
         "governance": {
-          "transparency": 82
+          "board_independence": 70,
+          "transparency": 72
         }
       }
     ]
