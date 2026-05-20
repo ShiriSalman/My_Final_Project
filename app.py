@@ -1,8 +1,11 @@
 import tkinter as tk
+from tkinter import ttk
 
 from pathlib import Path
 import json
-from tkinter import ttk
+
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
 
 from analyzer import Company
 from analyzer import Analyzer
@@ -97,7 +100,34 @@ def show_selected_company():
                 output_text.insert(tk.END, f"Overall ESG Score   : {esg_score:.2f}\n")
                 output_text.insert(tk.END, f"Rating              : {rating}\n", tag)
 
+                show_trend_chart(company)
+
             break
+
+def show_trend_chart(company):
+    for widget in chart_frame.winfo_children():
+        widget.destroy()  # delete old chart
+    years = []
+    scores = []
+
+    for entry in company.data:
+        _, _, _, esg_score = Analyzer.calculate_esg_score(entry)
+        years.append(str(entry["year"]))
+        scores.append(esg_score)
+
+    fig = Figure(figsize=(5, 4), dpi=100)
+    ax = fig.add_subplot(111)
+
+    ax.plot(years, scores)
+    ax.set_title(f"ESG Trend - {company.name}")
+    ax.set_xlabel("Year")
+    ax.set_ylabel("ESG Score")
+    ax.grid(True)
+
+    canvas = FigureCanvasTkAgg(fig, master=chart_frame)
+    canvas.draw()
+    canvas.get_tk_widget().pack(fill="both", expand=True)
+
 #-------------------------------------- GUI window --------
 
 root = tk.Tk()  # initialize root widget
@@ -276,7 +306,7 @@ chart_frame.pack(side="right", fill="both", expand=True)
 chart_title = tk.Label(chart_frame, text="Charts / Comparison", bg="white", font=("Arial", 14, "bold"))
 chart_title.pack(pady=10)
 
-# ---------------------- output ---------------------------------------------------------------------
+# ---------------------- output tags ---------------------------------------------------------------------
 
 output_text = tk.Text(
     company_details_frame,
@@ -293,6 +323,51 @@ output_text.tag_configure(
     foreground="#2e7d32"
 )
 output_text.pack(pady=20)
+
+output_text.tag_configure(
+    "year",
+    font=("Arial", 12, "bold")
+)
+
+output_text.tag_configure(
+    "rating_good",
+    foreground="green",
+    font=("Arial", 11, "bold")
+)
+
+output_text.tag_configure(
+    "trend",
+    foreground="#1565c0",
+    font=("Arial", 11, "bold")
+)
+
+output_text.tag_configure(
+    "line",
+    foreground="grey"
+)
+output_text.tag_configure(
+    "excellent",
+    foreground="dark green",
+    font=("Arial", 11, "bold")
+)
+
+output_text.tag_configure(
+    "good",
+    foreground="green",
+    font=("Arial", 11, "bold")
+)
+output_text.tag_configure(
+    "average",
+    foreground="orange",
+    font=("Arial", 11, "bold")
+)
+
+output_text.tag_configure(
+    "bad",
+    foreground="red",
+    font=("Arial", 11, "bold")
+)
+
 
 # ------------------------------------------------------------
 
