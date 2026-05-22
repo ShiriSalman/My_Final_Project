@@ -144,6 +144,17 @@ sidebar.pack_propagate(False)  # don't ignore
 title = tk.Label(sidebar, text="ESG Analyzer", bg="#ffffff", font=("Arial", 18, "bold"))
 title.pack(pady=30)
 
+company_names = [company.name for company in company_list]
+company_dropdown = ttk.Combobox(
+    sidebar,
+    values=company_names,
+    state="readonly",
+    font=("Arial", 12),
+    width=20
+)
+company_dropdown.pack(pady=10)
+company_dropdown.current(0)
+
 analyze_button = tk.Button(sidebar,
     text="Analyze Company",
     width=18,
@@ -218,21 +229,11 @@ refresh_data_button.pack(pady=10)
 
 # -------------------- left side ---------------------------------
 main_frame = tk.Frame(root, bg="#ffffff")
-main_frame.pack(side="right", fill="both", expand=True)
+# main_frame.pack(side="right", fill="both", expand=True)
+main_frame.pack(fill="both", expand=True)
 
 main_title = tk.Label(main_frame, text="Dashboard", bg="#ffffff", font=("Arial", 20, "bold"))
 main_title.pack(pady=20)
-
-company_names = [company.name for company in company_list]
-company_dropdown = ttk.Combobox(
-    main_frame,
-    values=company_names,
-    state="readonly",
-    font=("Arial", 12),
-    width=20
-)
-company_dropdown.pack(pady=10)
-company_dropdown.current(0)
 
 # -------------------------- Cards -----------------------
 cards_frame = tk.Frame(main_frame, bg="#ffffff")
@@ -285,31 +286,50 @@ trend_score.pack()
 
 # ------------------------------------------------------------------------------------------------
 
-content_frame = tk.Frame(main_frame, bg="#ffffff")
+# content_frame = tk.Frame(main_frame, bg="#ffffff")
+# content_frame.pack(fill="both", expand=True, padx=20, pady=20)
+
+# company_details_frame = tk.Frame(content_frame, bg="white", width=340, relief="solid", borderwidth=1)
+# company_details_frame.pack(side="left", fill="y", padx=(0, 10))
+# company_details_frame.pack_propagate(False)
+# company_details_title = tk.Label(company_details_frame, text="Company Details", bg="white", font=("Arial", 14, "bold"))
+# company_details_title.pack(anchor="w", padx=10, pady=10)
+
+# """ company_ranking_frame = tk.Frame(content_frame, bg="white", width=320, relief="solid", borderwidth=1)
+# company_ranking_frame.pack(side="left", fill="y", padx=(0, 10))
+# company_ranking_frame.pack_propagate(False) """
+content_frame = tk.Frame(main_frame, bg="#f4f7f5")
 content_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
-company_details_frame = tk.Frame(content_frame, bg="white", width=340, relief="solid", borderwidth=1)
-company_details_frame.pack(side="left", fill="y", padx=(0, 10))
-company_details_frame.pack_propagate(False)
-company_details_title = tk.Label(company_details_frame, text="Company Details", bg="white", font=("Arial", 14, "bold"))
-company_details_title.pack(anchor="w", padx=10, pady=10)
+for i in range(2):
+    content_frame.grid_rowconfigure(i, weight=1, uniform="row")
+    content_frame.grid_columnconfigure(i, weight=1, uniform="cols")
 
-""" company_ranking_frame = tk.Frame(content_frame, bg="white", width=320, relief="solid", borderwidth=1)
-company_ranking_frame.pack(side="left", fill="y", padx=(0, 10))
-company_ranking_frame.pack_propagate(False) """
 
-# --------------- Chart Frame -------------------
+details_frame = tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
+details_frame.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+details_title = tk.Label(details_frame, text="Company Details", bg="white", font=("Arial", 14, "bold"))
+details_title.pack(pady=10)
 
-chart_frame = tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
-chart_frame.pack(side="right", fill="both", expand=True)
+ranking_frame = tk.Frame(content_frame, bg="lightblue", relief="solid", borderwidth=1)
+ranking_frame.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
+ranking_title = tk.Label(ranking_frame, text="Company Ranking", bg="white", font=("Arial", 14, "bold"))
+ranking_title.pack(pady=10)
 
+frame3 = tk.Frame(content_frame, bg="lightgreen", relief="solid", borderwidth=1)
+frame3.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+frame3_title = tk.Label(frame3, text="", bg="white", font=("Arial", 14, "bold"))
+frame3_title.pack(pady=10)
+
+chart_frame= tk.Frame(content_frame, bg="lightyellow", relief="solid", borderwidth=1)
+chart_frame.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
 chart_title = tk.Label(chart_frame, text="Charts / Comparison", bg="white", font=("Arial", 14, "bold"))
 chart_title.pack(pady=10)
 
 # ---------------------- output tags ---------------------------------------------------------------------
 
 output_text = tk.Text(
-    company_details_frame,
+    details_frame,
     height=20,
     width=70,
     font=("Consolas", 11),
