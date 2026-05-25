@@ -44,7 +44,7 @@ analyzer = Analyzer(company_list)
 def show_ranking(selected_name):
 
     ranking_result = analyzer.ranking()
-    
+
     for item in ranking_table.get_children():
         ranking_table.delete(item)
 
@@ -61,6 +61,36 @@ def show_ranking(selected_name):
         tag = "selected" if name == selected_name else ""
         ranking_table.insert("", "end", values=(i, name, f"{score:.2f}"), tags=(tag,))
    
+# -------------------------------------------------
+def show_comparison_chart():
+
+    company_names= []
+    scores =[]
+
+    for company in company_list:
+        last_entry = company.data[-1]
+        _, _, _, esg_score = Analyzer.calculate_esg_score(last_entry)
+        company_names.append(company.name)
+        scores.append(esg_score)
+
+    fig = Figure(figsize=(9,4), dpi=100)
+    fig.subplots_adjust(left=0.25)
+
+    ax = fig.add_subplot(111)
+    ax.set_title("Company ESG Comparison")
+    ax.set_xlabel("ESG Score")
+    ax.set_xlim(0, 100)
+
+    ax.barh(company_names, scores, height=0.50, color="#2e7d32")
+    ax.grid(axis="x", linestyle="--", alpha=0.4)
+
+    for i, score in enumerate(scores):
+        ax.text(score + 1, i, f"{score:.1f}")
+
+    canvas = FigureCanvasTkAgg(fig, master=comparison_frame)
+    canvas.draw()
+    canvas.get_tk_widget().pack(fill="both", expand=True)
+        
 
 # --------------------------------------------------            
 
@@ -125,6 +155,7 @@ def show_selected_company():
 
                 show_trend_chart(company)
                 show_ranking(selected_name)
+                show_comparison_chart()
 
             output_text.config(state="disabled")            
 
@@ -331,10 +362,10 @@ ranking_frame.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
 ranking_title = tk.Label(ranking_frame, text="Company Ranking", bg="white", font=("Arial", 14, "bold"))
 ranking_title.pack(pady=10)
 
-frame3 = tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
-frame3.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
-frame3_title = tk.Label(frame3, text="", bg="white", font=("Arial", 14, "bold"))
-frame3_title.pack(pady=10)
+comparison_frame = tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
+comparison_frame.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+comparison_frame_title = tk.Label(comparison_frame, text="", bg="white", font=("Arial", 14, "bold"))
+comparison_frame_title.pack(pady=10)
 
 chart_frame= tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
 chart_frame.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
@@ -403,21 +434,6 @@ output_text.tag_configure(
     font=("Arial", 11, "bold")
 )
 
-""" ranking_text = tk.Text(
-    ranking_frame,
-    height=20,
-    width=70,
-    font=("Consolas", 11),
-    bg="white",
-    fg="#1f2933"
-)
-ranking_text.pack(pady=20)
-ranking_text.tag_configure(
-    "selected",
-    foreground="#2e7d32",
-    font=("Arial", 11, "bold")
-) """
-
 ranking_table = ttk.Treeview(
     ranking_frame,
     columns=("rank", "company", "score"),
@@ -442,24 +458,5 @@ ranking_table.pack(fill="both", expand=True, padx=10, pady=10)
 
 
 # ------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 root.mainloop()
 
