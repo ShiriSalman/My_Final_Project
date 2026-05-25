@@ -31,6 +31,36 @@
           "board_independence": 90,
           "transparency": 92
         }
+      },
+      {
+        "year": 2023,
+        "environmental": {
+          "co2_reduction": 86,
+          "energy_efficiency": 88
+        },
+        "social": {
+          "employee_satisfaction": 87,
+          "diversity_index": 85
+        },
+        "governance": {
+          "board_independence": 93,
+          "transparency": 94
+        }
+      },
+      {
+        "year": 2024,
+        "environmental": {
+          "co2_reduction": 90,
+          "energy_efficiency": 92
+        },
+        "social": {
+          "employee_satisfaction": 89,
+          "diversity_index": 88
+        },
+        "governance": {
+          "board_independence": 95,
+          "transparency": 96
+        }
       }
     ]
   },
@@ -55,6 +85,36 @@
       },
       {
         "year": 2022,
+        "environmental": {
+          "co2_reduction": 70,
+          "energy_efficiency": 75
+        },
+        "social": {
+          "employee_satisfaction": 80,
+          "diversity_index": 70
+        },
+        "governance": {
+          "board_independence": 85,
+          "transparency": 89
+        }
+      },
+      {
+        "year": 2023,
+        "environmental": {
+          "co2_reduction": 71,
+          "energy_efficiency": 74
+        },
+        "social": {
+          "employee_satisfaction": 79,
+          "diversity_index": 71
+        },
+        "governance": {
+          "board_independence": 84,
+          "transparency": 88
+        }
+      },
+      {
+        "year": 2024,
         "environmental": {
           "co2_reduction": 70,
           "energy_efficiency": 75
@@ -102,6 +162,36 @@
         "governance": {
           "board_independence": 70,
           "transparency": 72
+        }
+      },
+      {
+        "year": 2023,
+        "environmental": {
+          "co2_reduction": 50,
+          "energy_efficiency": 52
+        },
+        "social": {
+          "employee_satisfaction": 54,
+          "diversity_index": 53
+        },
+        "governance": {
+          "board_independence": 66,
+          "transparency": 68
+        }
+      },
+      {
+        "year": 2024,
+        "environmental": {
+          "co2_reduction": 45,
+          "energy_efficiency": 48
+        },
+        "social": {
+          "employee_satisfaction": 50,
+          "diversity_index": 49
+        },
+        "governance": {
+          "board_independence": 62,
+          "transparency": 64
         }
       }
     ]

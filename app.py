@@ -7,6 +7,9 @@ import json
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
+import customtkinter as ctk
+
+
 from analyzer import Company
 from analyzer import Analyzer
 
@@ -38,17 +41,37 @@ for item in data:
 analyzer = Analyzer(company_list)
 
 # --------------------------------- functions to show results --------------------------
-def show_ranking():
-    output_text.delete("1.0", tk.END)
-    result = analyzer.ranking()
-    output_text.insert(tk.END, result)
+def show_ranking(selected_name):
+
+    ranking_result = analyzer.ranking()
+    
+    for item in ranking_table.get_children():
+        ranking_table.delete(item)
+
+    ranking_list = []
+
+    for company in company_list:
+        last_entry = company.data[-1]
+        _, _, _, esg_score = Analyzer.calculate_esg_score(last_entry)
+        ranking_list.append((company.name, esg_score))
+
+    ranking_list.sort(key=lambda x: x[1], reverse=True)
+
+    for i, (name, score) in enumerate(ranking_list, start=1):
+        tag = "selected" if name == selected_name else ""
+        ranking_table.insert("", "end", values=(i, name, f"{score:.2f}"), tags=(tag,))
+   
+
+# --------------------------------------------------            
 
 def show_selected_company():
+
     selected_name = company_dropdown.get()
 
     for company in company_list:
         if company.name == selected_name:
 
+            output_text.config(state="normal")
             output_text.delete("1.0", tk.END)  # clear output
 
             output_text.insert(tk.END, f"{company.name}\n", "company")
@@ -58,7 +81,7 @@ def show_selected_company():
             
             env, soc, gov, latest_esg_score = Analyzer.calculate_esg_score(last_entry)
 
-            env_score.config(text=f"{env:.2f}")
+            env_score.config(text=f"{env:.2f}%")
             soc_score.config(text=f"{soc:.2f}")
             gov_score.config(text=f"{gov:.2f}")
             total_score.config(text=f"{latest_esg_score:.2f}")  
@@ -101,6 +124,9 @@ def show_selected_company():
                 output_text.insert(tk.END, f"Rating              : {rating}\n", tag)
 
                 show_trend_chart(company)
+                show_ranking(selected_name)
+
+            output_text.config(state="disabled")            
 
             break
 
@@ -118,8 +144,8 @@ def show_trend_chart(company):
     fig = Figure(figsize=(5, 4), dpi=100)
     ax = fig.add_subplot(111)
 
-    ax.plot(years, scores)
-    ax.set_title(f"ESG Trend - {company.name}")
+    ax.plot(years, scores, marker="o")
+    ax.set_title(f"ESG Score over Years - {company.name}")
     ax.set_xlabel("Year")
     ax.set_ylabel("ESG Score")
     ax.grid(True)
@@ -132,7 +158,7 @@ def show_trend_chart(company):
 
 root = tk.Tk()  # initialize root widget
 root.title("ESG Data Analyzer")
-root.geometry("1200x700")
+root.geometry("1400x800")
 root.configure(background="#f4f7f5")
 
 # ------------ sidebar right -------------------------
@@ -240,12 +266,13 @@ cards_frame = tk.Frame(main_frame, bg="#ffffff")
 cards_frame.pack(pady=15)
 
 # Environmental card:
-env_card = tk.Frame(cards_frame, bg="white", width=170, height=100, relief="solid", borderwidth=1)
-env_card.pack(side="left", padx=10)
+env_card = ctk.CTkFrame(cards_frame, width=170, height=100, fg_color="white", border_width=1,
+border_color="#e0e2e6", corner_radius=10)
+env_card.pack(side="left", padx=5)
 env_card.pack_propagate(False)
 env_title = tk.Label(env_card, text="Environmental", bg="white", font=("Arial", 12, "bold"))
 env_title.pack(pady=10)
-env_score = tk.Label(env_card, text="0.00", bg="white", fg="#2e7d32", font=("Arial", 24, "bold"))   
+env_score = tk.Label(env_card, text="0.00", bg="white", fg="#3BB96D", font=("Arial", 24, "bold"))   
 env_score.pack()
 
 # social card:
@@ -254,7 +281,7 @@ soc_card.pack(side="left", padx=10)
 soc_card.pack_propagate(False)
 soc_title = tk.Label(soc_card, text="Social", bg="white", font=("Arial", 12, "bold"))
 soc_title.pack(pady=10)
-soc_score = tk.Label(soc_card, text="0.00", bg="white", fg="#2e7d32", font=("Arial", 24, "bold"))
+soc_score = tk.Label(soc_card, text="0.00", bg="white", fg="#764EC9", font=("Arial", 24, "bold"))
 soc_score.pack()
 
 # Governance card:
@@ -263,7 +290,7 @@ gov_card.pack(side="left", padx=10)
 gov_card.pack_propagate(False)
 gov_title = tk.Label(gov_card, text="Governance", bg="white", font=("Arial", 12, "bold"))
 gov_title.pack(pady=10)
-gov_score = tk.Label(gov_card, text="0.00", bg="white", fg="#2e7d32", font=("Arial", 24, "bold"))
+gov_score = tk.Label(gov_card, text="0.00", bg="white", fg="#2670DA", font=("Arial", 24, "bold"))
 gov_score.pack()
 
 # ESG Total card:
@@ -272,7 +299,7 @@ total_card.pack(side="left", padx=10)
 total_card.pack_propagate(False)
 total_title = tk.Label(total_card, text="ESG Total", bg="white", font=("Arial", 12, "bold"))
 total_title.pack(pady=10)
-total_score = tk.Label(total_card, bg="white", fg="#2e7d32", font=("Arial", 24, "bold"))
+total_score = tk.Label(total_card, bg="white", fg="#708192", font=("Arial", 24, "bold"))
 total_score.pack()
 
 # Trend card:
@@ -281,24 +308,12 @@ trend_card.pack(side="left", padx=10)
 trend_card.pack_propagate(False)
 trend_title = tk.Label(trend_card, text="Trend", bg="white", font=("Arial", 12, "bold"))
 trend_title.pack(pady=10)
-trend_score = tk.Label(trend_card, bg="white", fg="#2e7d32", font=("Arial", 18, "bold"))
+trend_score = tk.Label(trend_card, bg="white", fg="#E3791D", font=("Arial", 18, "bold"))
 trend_score.pack()
 
 # ------------------------------------------------------------------------------------------------
 
-# content_frame = tk.Frame(main_frame, bg="#ffffff")
-# content_frame.pack(fill="both", expand=True, padx=20, pady=20)
-
-# company_details_frame = tk.Frame(content_frame, bg="white", width=340, relief="solid", borderwidth=1)
-# company_details_frame.pack(side="left", fill="y", padx=(0, 10))
-# company_details_frame.pack_propagate(False)
-# company_details_title = tk.Label(company_details_frame, text="Company Details", bg="white", font=("Arial", 14, "bold"))
-# company_details_title.pack(anchor="w", padx=10, pady=10)
-
-# """ company_ranking_frame = tk.Frame(content_frame, bg="white", width=320, relief="solid", borderwidth=1)
-# company_ranking_frame.pack(side="left", fill="y", padx=(0, 10))
-# company_ranking_frame.pack_propagate(False) """
-content_frame = tk.Frame(main_frame, bg="#f4f7f5")
+content_frame = tk.Frame(main_frame, bg="#ffffff")
 content_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
 for i in range(2):
@@ -311,17 +326,17 @@ details_frame.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
 details_title = tk.Label(details_frame, text="Company Details", bg="white", font=("Arial", 14, "bold"))
 details_title.pack(pady=10)
 
-ranking_frame = tk.Frame(content_frame, bg="lightblue", relief="solid", borderwidth=1)
+ranking_frame = tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
 ranking_frame.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
 ranking_title = tk.Label(ranking_frame, text="Company Ranking", bg="white", font=("Arial", 14, "bold"))
 ranking_title.pack(pady=10)
 
-frame3 = tk.Frame(content_frame, bg="lightgreen", relief="solid", borderwidth=1)
+frame3 = tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
 frame3.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
 frame3_title = tk.Label(frame3, text="", bg="white", font=("Arial", 14, "bold"))
 frame3_title.pack(pady=10)
 
-chart_frame= tk.Frame(content_frame, bg="lightyellow", relief="solid", borderwidth=1)
+chart_frame= tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
 chart_frame.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
 chart_title = tk.Label(chart_frame, text="Charts / Comparison", bg="white", font=("Arial", 14, "bold"))
 chart_title.pack(pady=10)
@@ -387,6 +402,43 @@ output_text.tag_configure(
     foreground="red",
     font=("Arial", 11, "bold")
 )
+
+""" ranking_text = tk.Text(
+    ranking_frame,
+    height=20,
+    width=70,
+    font=("Consolas", 11),
+    bg="white",
+    fg="#1f2933"
+)
+ranking_text.pack(pady=20)
+ranking_text.tag_configure(
+    "selected",
+    foreground="#2e7d32",
+    font=("Arial", 11, "bold")
+) """
+
+ranking_table = ttk.Treeview(
+    ranking_frame,
+    columns=("rank", "company", "score"),
+    show="headings",
+    height=5
+)
+
+ranking_table.heading("rank", text="Rank")
+ranking_table.heading("company", text="Company")
+ranking_table.heading("score", text="ESG Score")
+
+ranking_table.column("rank", width=60, anchor="center")
+ranking_table.column("company", width=220)
+ranking_table.column("score", width=100, anchor="center")
+
+ranking_table.tag_configure(
+    "selected",
+    background="#d8f3dc",
+    foreground="#1b7f35"
+)
+ranking_table.pack(fill="both", expand=True, padx=10, pady=10)
 
 
 # ------------------------------------------------------------
