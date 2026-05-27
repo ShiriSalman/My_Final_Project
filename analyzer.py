@@ -78,13 +78,9 @@ class Analyzer:
             env, soc, gov, esg_score = Analyzer.calculate_esg_score(last_entry)
 
             ranking_list.append((company.name, esg_score))
-            ranking_list.sort(key = lambda x: x[1], reverse = True)
+        ranking_list.sort(key = lambda x: x[1], reverse = True)
 
-        output += "\n=== Company Ranking ===\n"
-        output += "\n"   
-        for i, (name, score) in enumerate(ranking_list, start = 1):
-            output += f"{i}. {name:<20} --> {score:.2f}\n"
-        return output    
+        return ranking_list  
 # ----------------------------------------------
     @staticmethod
     def get_trend(company_data):

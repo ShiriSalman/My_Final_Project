@@ -6,7 +6,7 @@ import json
 from analyzer import Company
 from analyzer import Analyzer
 
-# --------------- read ESG data from esg_data.json --------------------
+# read ESG data from esg_data.json
 
 FILE_NAME = "esg_data.json"
 
@@ -31,11 +31,10 @@ for item in data:
     new_company = Company(item["company"], item["data"])
     company_list.append(new_company)   
 
-analyzer = Analyzer(company_list)                       
+analyzer = Analyzer(company_list)   
+
    
-# ------------------------------------------------------------------------------------
-                                       # main menu:
-# ------------------------------------------------------------------------------------
+# main menu:
 
 def menu(): 
     while True:
@@ -46,6 +45,7 @@ def menu():
         print()
 
         # menu options:
+
         print("1. Analyze all companies")
         print("2. Analyze one Company")
         print("3. Ranking")
@@ -64,7 +64,7 @@ def menu():
 
         elif choice == 2:
             for i, company in enumerate(company_list, start = 1):
-                print(i, company.name)         # show a list of available companies to choos from!
+                print(i, company.name)                           # show a list of available companies to choos from!
                 
             try:
                 company_number = int(input("\nPlease choose a company number to analyze: "))
@@ -80,12 +80,16 @@ def menu():
                 print("Invalid number, please try again!")   
 
         elif choice == 3:
-           ranking = analyzer.ranking()
-           print(ranking)  
-        
+           ranking_list = analyzer.ranking()
+           print("\n=== Company Ranking ===\n")
+
+           for i, (name, score) in enumerate(ranking_list, start=1):
+                print(f"{i}. {name:<20} --> {score:.2f}") 
+                print()
+                    
         elif choice == 4:
-            break
+                        break
         else:
-            print("Invalid input, please try again")   
-            
+                print("Invalid input, please try again")   
+                        
 menu()

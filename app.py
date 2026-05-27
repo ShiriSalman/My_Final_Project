@@ -1,19 +1,25 @@
+# tkinter for GUI components and ttk for advanced widgets like Combobox and Treeview
 import tkinter as tk
 from tkinter import ttk
 
+# pathlib to handle filesystem paths
 from pathlib import Path
+# json for loading ESG data from JSON files
 import json
 
+# matplotlib integration for displaying charts inside Tkinter frames 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
+# customtkinter for modern styled Tkinter widgets and UI components
 import customtkinter as ctk
 
 
 from analyzer import Company
 from analyzer import Analyzer
 
-# ---------------------------- read json file .....
+
+# Read JSON file
 
 FILE_NAME = "ESG_DATA.json"
 
@@ -21,7 +27,7 @@ path = Path.cwd() / FILE_NAME
 
 try:
     with path.open(mode="r") as file:
-        data = json.load(file)  # Convert JSON data to a Python object
+        data = json.load(file)                # Convert JSON data to a Python object
         print("*** Data loaded successfully ***\n")
         print("Number of companies:", len(data))
 except FileNotFoundError:
@@ -29,9 +35,8 @@ except FileNotFoundError:
 except Exception as e:
     print(f"Unexpected error: {e}")
 
-print()
 
-# --------------------------create company objects ------
+# Create company objects
 
 company_list = []
 for item in data:
@@ -40,28 +45,23 @@ for item in data:
 
 analyzer = Analyzer(company_list)
 
-# --------------------------------- functions to show results --------------------------
+
+# Function to show Ranking
+
 def show_ranking(selected_name):
 
-    ranking_result = analyzer.ranking()
+    ranking_list = analyzer.ranking()
 
     for item in ranking_table.get_children():
         ranking_table.delete(item)
 
-    ranking_list = []
-
-    for company in company_list:
-        last_entry = company.data[-1]
-        _, _, _, esg_score = Analyzer.calculate_esg_score(last_entry)
-        ranking_list.append((company.name, esg_score))
-
-    ranking_list.sort(key=lambda x: x[1], reverse=True)
-
     for i, (name, score) in enumerate(ranking_list, start=1):
         tag = "selected" if name == selected_name else ""
         ranking_table.insert("", "end", values=(i, name, f"{score:.2f}"), tags=(tag,))
-   
-# -------------------------------------------------
+
+
+# Function to show Comparison Chart
+
 def show_comparison_chart():
 
     company_names= []
