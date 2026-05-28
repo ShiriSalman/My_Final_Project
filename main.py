@@ -3,10 +3,12 @@
 from pathlib import Path
 import json
 
+# import Classes
+
 from analyzer import Company
 from analyzer import Analyzer
 
-# read ESG data from esg_data.json
+# Read ESG data from esg_data.json
 
 FILE_NAME = "esg_data.json"
 
@@ -14,7 +16,7 @@ path = Path.cwd() / FILE_NAME
 
 try:
     with path.open(mode="r", ) as file:
-        data = json.load(file)  # Convert JSON data to a Python object
+        data = json.load(file)                    # Convert JSON data to a Python object
         print("*** Data loaded successfully ***")
         print("Number of companies:", len(data))
 except FileNotFoundError:
@@ -67,7 +69,7 @@ def menu():
                 print(i, company.name)                           # show a list of available companies to choos from!
                 
             try:
-                company_number = int(input("\nPlease choose a company number to analyze: "))
+                company_number = int(input("\nPlease choose a company to analyze: "))
             except ValueError:
                 print("Invalid input, please enter a number!")
                 continue
@@ -75,14 +77,15 @@ def menu():
             if 1 <= company_number <= len(data):
                 index = company_number - 1
                 selected_company = company_list[index]
-                print(analyzer.analyze_company(selected_company))
+                result = analyzer.analyze_company(selected_company)
+                print(result)
             else:
                 print("Invalid number, please try again!")   
 
         elif choice == 3:
            ranking_list = analyzer.ranking()
            print("\n=== Company Ranking ===\n")
-
+          
            for i, (name, score) in enumerate(ranking_list, start=1):
                 print(f"{i}. {name:<20} --> {score:.2f}") 
                 print()

@@ -205,16 +205,13 @@ sidebar.pack_propagate(False)  # don't ignore
 title = tk.Label(sidebar, text="ESG Analyzer", bg="#ffffff", font=("Arial", 18, "bold"))
 title.pack(pady=30)
 
+# Create ComboBox with Company names
+
 company_names = [company.name for company in company_list]
-company_dropdown = ttk.Combobox(
-    sidebar,
-    values=company_names,
-    state="readonly",
-    font=("Arial", 12),
-    width=20
-)
+company_dropdown = ttk.Combobox(sidebar, values=company_names, state="readonly", font=("Arial", 12), width=20)
 company_dropdown.pack(pady=10)
-company_dropdown.current(0)
+company_dropdown.current(0)             # Show first entry in Company_names
+
 
 analyze_button = tk.Button(sidebar, text="Analyze Company", width=18, height=1, font=("Arial", 11, "bold"), bg="#2673D9", fg="white",
                  activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0, command=show_selected_company)

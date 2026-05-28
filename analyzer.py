@@ -10,6 +10,7 @@ class Analyzer:
     def __init__(self, company_list):
         self.company_list = company_list
 
+    # Function to analyze company
     @staticmethod
     def analyze_company(company):
 
@@ -21,11 +22,13 @@ class Analyzer:
 
         esg_scores_list = []
 
+        # Calculate ESG scores for each year
         for entry in company.data:
 
             env, soc, gov, esg_score = Analyzer.calculate_esg_score(entry)
             esg_scores_list.append(esg_score)
 
+            # Determine ESG rating based on ESG score
             rating = Analyzer.get_rating(esg_score)
 
             result += "\n"
@@ -38,6 +41,7 @@ class Analyzer:
             result += f"{'Overall ESG Score':<22}: {esg_score:.2f}\n"
             result += f"{'Rating':<22} {rating}\n"
 
+        # Determine overall ESG trend
         trend = ""
         if len(esg_scores_list) > 1:
             trend = Analyzer.get_trend(company.data)
@@ -47,7 +51,7 @@ class Analyzer:
         result += "\n"
         return result
             
-# ------------------------------------------------------------------------------------
+# Calculate ESG Score
     @staticmethod
     def calculate_esg_score(entry):
 
@@ -55,10 +59,11 @@ class Analyzer:
         social_values = entry["social"].values() 
         governance_values = entry["governance"].values()
 
-        environmental_score = sum(environmental_values) / len(environmental_values) 
-        social_score = sum(social_values) / len(social_values)
-        governance_score = sum(governance_values) / len(governance_values)
-
+        environmental_score = sum(environmental_values) / len(environmental_values)  if environmental_values else 0
+        social_score = sum(social_values) / len(social_values) if social_values else 0
+        governance_score = sum(governance_values) / len(governance_values) if governance_values else 0
+        
+        # Apply weighting factors to calculate the final ESG score
         esg_score = (
             0.4 * environmental_score
             + 0.3 * social_score
@@ -67,23 +72,28 @@ class Analyzer:
 
         return environmental_score, social_score, governance_score, esg_score
 
-# --------------------------------------------------------------------------------------------------
+# Create Ranking list of companies
     def ranking(self):
 
         ranking_list = []
-        output = ""
+        
+        # Get ESG score for last year
         for company in self.company_list:
-            last_entry = company.data[-1]  # last year
+            last_entry = company.data[-1]      
 
             env, soc, gov, esg_score = Analyzer.calculate_esg_score(last_entry)
 
             ranking_list.append((company.name, esg_score))
+
         ranking_list.sort(key = lambda x: x[1], reverse = True)
 
         return ranking_list  
-# ----------------------------------------------
+
+# Determine ESG Trend
     @staticmethod
     def get_trend(company_data):
+
+        # Compare ESG score of first and last year
         first_entry = company_data[0]
         last_entry = company_data[-1]
 
@@ -97,7 +107,7 @@ class Analyzer:
         else:
             return "Stable"
     
-# --------------------------------------------------    
+# Determine ESG Rating
     @staticmethod
     def get_rating(esg_score):
 
