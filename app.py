@@ -57,7 +57,7 @@ def show_ranking(selected_name):
 
     for i, (name, score) in enumerate(ranking_list, start=1):
         tag = "selected" if name == selected_name else ""
-        ranking_table.insert("", "end", values=(i, name, f"{score:.2f}"), tags=(tag,))
+        ranking_table.insert("", "end", values=(i, name, f"{score:.2f}"), tags=(tag,))  # insert the new line at the end of tabel
 
 
 # Function to show Comparison Chart
@@ -77,22 +77,22 @@ def show_comparison_chart():
     fig.subplots_adjust(left=0.25)
 
     ax = fig.add_subplot(111)
-    ax.set_title("Company ESG Comparison")
-    ax.set_xlabel("ESG Score")
+    ax.set_title("Company ESG Comparison", fontsize=9)
+    ax.set_xlabel("ESG Score", fontsize=9)
     ax.set_xlim(0, 100)
 
     ax.barh(company_names, scores, height=0.50, color="#2e7d32")
     ax.grid(axis="x", linestyle="--", alpha=0.4)
 
     for i, score in enumerate(scores):
-        ax.text(score + 1, i, f"{score:.1f}")
+        ax.text(score + 1, i, f"{score:.1f}", fontsize=6)
 
     canvas = FigureCanvasTkAgg(fig, master=comparison_frame)
     canvas.draw()
-    canvas.get_tk_widget().pack(fill="both", expand=True)
+    canvas.get_tk_widget().pack(fill="both", expand=True, padx=15, pady=(5,15))
         
 
-# --------------------------------------------------            
+# Funktion to show analized Company on Dashboard        
 
 def show_selected_company():
 
@@ -161,7 +161,10 @@ def show_selected_company():
 
             break
 
+# Function to show Trend Chart
+
 def show_trend_chart(company):
+
     for widget in chart_frame.winfo_children():
         widget.destroy()  # delete old chart
     years = []
@@ -176,23 +179,24 @@ def show_trend_chart(company):
     ax = fig.add_subplot(111)
 
     ax.plot(years, scores, marker="o")
-    ax.set_title(f"ESG Score over Years - {company.name}")
+    ax.set_title(f"ESG Score over Years - {company.name}", fontsize=10)
     ax.set_xlabel("Year")
     ax.set_ylabel("ESG Score")
     ax.grid(True)
 
     canvas = FigureCanvasTkAgg(fig, master=chart_frame)
     canvas.draw()
-    canvas.get_tk_widget().pack(fill="both", expand=True)
+    canvas.get_tk_widget().pack(fill="both", expand=True, padx=15, pady=(5,15))
+    
 
-#-------------------------------------- GUI window --------
+# GUI window
 
 root = tk.Tk()  # initialize root widget
 root.title("ESG Data Analyzer")
 root.geometry("1400x800")
 root.configure(background="#f4f7f5")
 
-# ------------ sidebar right -------------------------
+# Sidebar right
 
 sidebar = tk.Frame(root, bg="#ffffff", width=260)
 sidebar.pack(side="left", fill="y")
@@ -212,93 +216,42 @@ company_dropdown = ttk.Combobox(
 company_dropdown.pack(pady=10)
 company_dropdown.current(0)
 
-analyze_button = tk.Button(sidebar,
-    text="Analyze Company",
-    width=18,
-    height=1,
-    font=("Arial", 11, "bold"),
-    bg="#2673D9",
-    fg="white",
-    activebackground="#b0c1e7",
-    activeforeground="white",
-    relief="flat",
-    bd=0,
-    command=show_selected_company
-)
+analyze_button = tk.Button(sidebar, text="Analyze Company", width=18, height=1, font=("Arial", 11, "bold"), bg="#2673D9", fg="white",
+                 activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0, command=show_selected_company)
 analyze_button.pack(pady=10)
 
-analyze_all_button = tk.Button(sidebar,
-    text="Analyze all Companies",
-    width=18,
-    height=1,
-    font=("Arial", 11, "bold"),
-    bg="#2BA664",
-    fg="white",
-    activebackground="#b0c1e7",
-    activeforeground="white",
-    relief="flat",
-    bd=0
-)
+analyze_all_button = tk.Button(sidebar, text="Analyze all Companies", width=18, height=1, font=("Arial", 11, "bold"), bg="#2BA664",
+                     fg="white", activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0)
 analyze_all_button.pack(pady=10)
 
-show_ranking_button = tk.Button(sidebar,
-    text="Show Ranking",
-    width=18,
-    height=1,
-    font=("Arial", 11, "bold"),
-    bg="#8E67D8",
-    fg="white",
-    activebackground="#b0c1e7",
-    activeforeground="white",
-    relief="flat",
-    bd=0,
-    command=show_ranking
-)
+show_ranking_button = tk.Button(sidebar, text="Show Ranking", width=18, height=1, font=("Arial", 11, "bold"), bg="#8E67D8", fg="white",
+                      activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0, command=show_ranking)
 show_ranking_button.pack(pady=10)
 
-show_trends_button = tk.Button(sidebar,
-    text="Show Trends",
-    width=18,
-    height=1,
-    font=("Arial", 11, "bold"),
-    bg="#03A1AE",
-    fg="white",
-    activebackground="#b0c1e7",
-    activeforeground="white",
-    relief="flat",
-    bd=0
-)
+show_trends_button = tk.Button(sidebar, text="Show Trends", width=18, height=1, font=("Arial", 11, "bold"), bg="#03A1AE", fg="white",
+                     activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0)
 show_trends_button.pack(pady=10)
 
-refresh_data_button = tk.Button(sidebar,
-    text="Refresh Data",
-    width=18,
-    height=1,
-    font=("Arial", 11, "bold"),
-    bg="#718193",
-    fg="white",
-    activebackground="#b0c1e7",
-    activeforeground="white",
-    relief="flat",
-    bd=0
-)
+refresh_data_button = tk.Button(sidebar, text="Refresh Data", width=18, height=1, font=("Arial", 11, "bold"), bg="#718193", fg="white",
+                     activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0)
 refresh_data_button.pack(pady=10)
 
-# -------------------- left side ---------------------------------
+# Main frame left
+
 main_frame = tk.Frame(root, bg="#ffffff")
-# main_frame.pack(side="right", fill="both", expand=True)
 main_frame.pack(fill="both", expand=True)
 
 main_title = tk.Label(main_frame, text="Dashboard", bg="#ffffff", font=("Arial", 20, "bold"))
 main_title.pack(pady=20)
 
-# -------------------------- Cards -----------------------
+# Cards:
+
 cards_frame = tk.Frame(main_frame, bg="#ffffff")
 cards_frame.pack(pady=15)
 
 # Environmental card:
-env_card = ctk.CTkFrame(cards_frame, width=170, height=100, fg_color="white", border_width=1,
-border_color="#e0e2e6", corner_radius=10)
+
+env_card = ctk.CTkFrame(cards_frame, width=170, height=100, fg_color="white", border_width=1, border_color="#eceef3", corner_radius=10)
 env_card.pack(side="left", padx=5)
 env_card.pack_propagate(False)
 env_title = tk.Label(env_card, text="Environmental", bg="white", font=("Arial", 12, "bold"))
@@ -307,7 +260,8 @@ env_score = tk.Label(env_card, text="0.00", bg="white", fg="#3BB96D", font=("Ari
 env_score.pack()
 
 # social card:
-soc_card = tk.Frame(cards_frame, bg="white", width=170, height=100, relief="solid", borderwidth=1)
+
+soc_card = ctk.CTkFrame(cards_frame, width=170, height=100, fg_color="white", border_width=1, border_color="#e0e2e6", corner_radius=10)
 soc_card.pack(side="left", padx=10)
 soc_card.pack_propagate(False)
 soc_title = tk.Label(soc_card, text="Social", bg="white", font=("Arial", 12, "bold"))
@@ -316,7 +270,8 @@ soc_score = tk.Label(soc_card, text="0.00", bg="white", fg="#764EC9", font=("Ari
 soc_score.pack()
 
 # Governance card:
-gov_card = tk.Frame(cards_frame, bg="white", width=170, height=100, relief="solid", borderwidth=1)
+
+gov_card = ctk.CTkFrame(cards_frame, width=170, height=100, fg_color="white", border_width=1, border_color="#e0e2e6", corner_radius=10)
 gov_card.pack(side="left", padx=10)
 gov_card.pack_propagate(False)
 gov_title = tk.Label(gov_card, text="Governance", bg="white", font=("Arial", 12, "bold"))
@@ -325,7 +280,8 @@ gov_score = tk.Label(gov_card, text="0.00", bg="white", fg="#2670DA", font=("Ari
 gov_score.pack()
 
 # ESG Total card:
-total_card = tk.Frame(cards_frame, bg="white", width=170, height=100, relief="solid", borderwidth=1)
+
+total_card = ctk.CTkFrame(cards_frame, width=170, height=100, fg_color="white", border_width=1, border_color="#e0e2e6", corner_radius=10)
 total_card.pack(side="left", padx=10)
 total_card.pack_propagate(False)
 total_title = tk.Label(total_card, text="ESG Total", bg="white", font=("Arial", 12, "bold"))
@@ -334,7 +290,8 @@ total_score = tk.Label(total_card, bg="white", fg="#708192", font=("Arial", 24, 
 total_score.pack()
 
 # Trend card:
-trend_card = tk.Frame(cards_frame, bg="white", width=170, height=100, relief="solid", borderwidth=1)
+
+trend_card = ctk.CTkFrame(cards_frame, width=170, height=100, fg_color="white", border_width=1, border_color="#e0e2e6", corner_radius=10)
 trend_card.pack(side="left", padx=10)
 trend_card.pack_propagate(False)
 trend_title = tk.Label(trend_card, text="Trend", bg="white", font=("Arial", 12, "bold"))
@@ -352,94 +309,53 @@ for i in range(2):
     content_frame.grid_columnconfigure(i, weight=1, uniform="cols")
 
 
-details_frame = tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
+details_frame = ctk.CTkFrame(content_frame,fg_color="white", border_width=1, border_color="#e0e2e6", corner_radius=10)
 details_frame.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
-details_title = tk.Label(details_frame, text="Company Details", bg="white", font=("Arial", 14, "bold"))
+details_title =ctk.CTkLabel(details_frame, text="Company Details", font=("Arial", 14, "bold"))
 details_title.pack(pady=10)
 
-ranking_frame = tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
+ranking_frame = ctk.CTkFrame(content_frame,fg_color="white", border_width=1, border_color="#e0e2e6", corner_radius=10)
 ranking_frame.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
-ranking_title = tk.Label(ranking_frame, text="Company Ranking", bg="white", font=("Arial", 14, "bold"))
+ranking_title = ctk.CTkLabel(ranking_frame, text="Company Ranking", font=("Arial", 14, "bold"))
 ranking_title.pack(pady=10)
 
-comparison_frame = tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
+comparison_frame = ctk.CTkFrame(content_frame,fg_color="white", border_width=1, border_color="#e0e2e6", corner_radius=10)
 comparison_frame.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
-comparison_frame_title = tk.Label(comparison_frame, text="", bg="white", font=("Arial", 14, "bold"))
+comparison_frame_title = ctk.CTkLabel(comparison_frame, text="Comparisons", font=("Arial", 14, "bold"))
 comparison_frame_title.pack(pady=10)
 
-chart_frame= tk.Frame(content_frame, bg="white", relief="solid", borderwidth=1)
+chart_frame= ctk.CTkFrame(content_frame,fg_color="white", border_width=1, border_color="#e0e2e6", corner_radius=10)
 chart_frame.grid(row=1, column=1, padx=5, pady=5, sticky="nsew")
-chart_title = tk.Label(chart_frame, text="Charts / Comparison", bg="white", font=("Arial", 14, "bold"))
+chart_title = ctk.CTkLabel(chart_frame, text="Charts", font=("Arial", 14, "bold"))
 chart_title.pack(pady=10)
 
 # ---------------------- output tags ---------------------------------------------------------------------
 
-output_text = tk.Text(
-    details_frame,
-    height=20,
-    width=70,
-    font=("Consolas", 11),
-    bg="white",
-    fg="#1f2933"
-)
+output_text = tk.Text(details_frame, font=("Consolas", 11), bg="white", fg="#1f2933", relief="flat", borderwidth=0)
 
-output_text.tag_configure(
-    "company",
-    font=("Arial", 16, "bold"),
-    foreground="#2e7d32"
-)
-output_text.pack(pady=20)
+output_text.tag_configure("company", font=("Arial", 16, "bold"), foreground="#2e7d32")
 
-output_text.tag_configure(
-    "year",
-    font=("Arial", 12, "bold")
-)
+output_text.pack(fill="both", expand=True, padx=12, pady=(0, 12))
 
-output_text.tag_configure(
-    "rating_good",
-    foreground="green",
-    font=("Arial", 11, "bold")
-)
+output_text.tag_configure("year", font=("Arial", 12, "bold"))
+output_text.tag_configure("rating_good", foreground="green", font=("Arial", 11, "bold"))
+output_text.tag_configure("trend", foreground="#1565c0", font=("Arial", 11, "bold"))
+output_text.tag_configure("line", foreground="grey")
+output_text.tag_configure("excellent", foreground="dark green", font=("Arial", 11, "bold"))
 
-output_text.tag_configure(
-    "trend",
-    foreground="#1565c0",
-    font=("Arial", 11, "bold")
-)
+output_text.tag_configure("good", foreground="green", font=("Arial", 11, "bold"))
+output_text.tag_configure("average", foreground="orange", font=("Arial", 11, "bold"))
+output_text.tag_configure("bad", foreground="red", font=("Arial", 11, "bold"))
 
-output_text.tag_configure(
-    "line",
-    foreground="grey"
-)
-output_text.tag_configure(
-    "excellent",
-    foreground="dark green",
-    font=("Arial", 11, "bold")
-)
+# Ranking Output
 
-output_text.tag_configure(
-    "good",
-    foreground="green",
-    font=("Arial", 11, "bold")
-)
-output_text.tag_configure(
-    "average",
-    foreground="orange",
-    font=("Arial", 11, "bold")
-)
+style = ttk.Style()
+style.theme_use("clam")
+style.configure("Treeview", borderwidth=0, relief="flat", rowheight=30)
+style.layout("Treeview", [("Treeview.treearea", {"sticky": "nswe"})])
+style.configure("Treeview.Heading", background="white", foreground="#1f2933", font=("Arial", 10, "bold"), relief="flat")
 
-output_text.tag_configure(
-    "bad",
-    foreground="red",
-    font=("Arial", 11, "bold")
-)
-
-ranking_table = ttk.Treeview(
-    ranking_frame,
-    columns=("rank", "company", "score"),
-    show="headings",
-    height=5
-)
+ranking_table = ttk.Treeview(ranking_frame, columns=("rank", "company", "score"), show="headings", height=5)
 
 ranking_table.heading("rank", text="Rank")
 ranking_table.heading("company", text="Company")
@@ -449,14 +365,11 @@ ranking_table.column("rank", width=60, anchor="center")
 ranking_table.column("company", width=220)
 ranking_table.column("score", width=100, anchor="center")
 
-ranking_table.tag_configure(
-    "selected",
-    background="#d8f3dc",
-    foreground="#1b7f35"
-)
+ranking_table.tag_configure("selected", background="#d8f3dc", foreground="#1b7f35")
 ranking_table.pack(fill="both", expand=True, padx=10, pady=10)
 
 
 # ------------------------------------------------------------
+
 root.mainloop()
 
