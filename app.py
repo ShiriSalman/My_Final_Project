@@ -8,6 +8,7 @@ from pathlib import Path
 import json
 
 # Matplotlib integration for displaying charts inside Tkinter frames 
+from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
@@ -43,11 +44,11 @@ for item in data:
     new_company = Company(item["company"], item["data"])
     company_list.append(new_company)
 
-# pass company_list to analyzer
+# Pass company_list to analyzer
 analyzer = Analyzer(company_list)
 
 
-# Function to show Ranking
+# Show Ranking
 
 def show_ranking(selected_name):
 
@@ -59,14 +60,17 @@ def show_ranking(selected_name):
 
     for i, (name, score) in enumerate(ranking_list, start=1):
         tag = "selected" if name == selected_name else ""
-        # insert the new line as normal main line (without parent) at the end of ranking_tabel
+        # Insert the new line as normal main line (without parent) at the end of ranking_tabel
         ranking_table.insert("", "end", values=(i, name, f"{score:.2f}"), tags=(tag,))  # insert the new line as normal main line (without parent) at the end of tabel
 
 
-# Function to show Comparison Chart
+# Show Comparison Chart
+def show_comparison_chart(selected_name):
 
-def show_comparison_chart():
-
+    # remove the previous chart before creating a new one
+    for widget in comparison_frame.winfo_children():
+      widget.destroy() 
+    
     company_names= []
     scores =[]
 
@@ -75,22 +79,34 @@ def show_comparison_chart():
         _, _, _, esg_score = Analyzer.calculate_esg_score(last_entry)
         company_names.append(company.name)
         scores.append(esg_score)
-    
+
+    # Highlight the selected company in the comparison chart
+    bar_colors = []
+    for name in company_names:
+        if name == selected_name:
+            bar_colors.append("#E3791D")  
+        else:
+            bar_colors.append("#03A1AE")  
+      
     # Initialize custom figure
     fig = Figure(figsize=(8,4), dpi=100)      #  Figure size and resolution
 
     # Adjust the left boundary
-    fig.subplots_adjust(left=0.25)            # start at 25 % of the figure's total width, measured from the left margin     
+    fig.subplots_adjust(left=0.24)            # start at 24 % of the figure's total width, measured from the left margin     
     
-    # create a single plotting area for the chart
+    # Adjust the bottom boundary
+    fig.subplots_adjust(bottom=0.20)          
+
+    # Create a single plotting area for the chart
     ax = fig.add_subplot(111)                         # (row, column, Diagramm) inside the figure
 
     ax.set_title("Company ESG Comparison", fontsize=9, font="Arial")
     ax.set_xlabel("ESG Score", fontsize=9, font="Arial")
+
     ax.set_xlim(0, 100)                               # limit for ESG score 0 - 100
 
-    # create horizantal bar plot
-    ax.barh(company_names, scores, height=0.40, color="#3BB96D")
+    # Create horizantal bar plot
+    ax.barh(company_names, scores, height=0.40, color=bar_colors)
 
     # Create transparent dashed lines
     ax.grid(axis="x", linestyle="--", alpha=0.4)
@@ -102,11 +118,51 @@ def show_comparison_chart():
     canvas.draw()
 
     # Display the chart in frame  and allow it to resize with the frame
+    canvas.get_tk_widget().pack(fill="both", expand=True, padx=15, pady=(5,15)) 
+    
+
+# Show Trend Chart
+def show_trend_chart(company):
+    
+    # Remove previous chart before drawing a new one
+    for widget in chart_frame.winfo_children():
+        widget.destroy()  
+
+    years = []
+    scores = []
+
+    # Collect ESG scores for each year
+    for entry in company.data:
+        _, _, _, esg_score = Analyzer.calculate_esg_score(entry)
+        years.append(str(entry["year"]))
+        scores.append(esg_score)
+    
+    # Create matplotlib figure and plotting area
+    fig = Figure(figsize=(5, 4), dpi=100)
+    ax = fig.add_subplot(111)
+
+    # Adjust the bottom boundary
+    fig.subplots_adjust(bottom=0.20)
+    
+    # Create ESG trend line chart with circular marker for each data point
+    ax.plot(years, scores, marker="o")
+
+    # Configure chart labels and appearance
+    ax.set_title(f"ESG Score over Years - {company.name}", fontsize=10, font="Arial")
+    ax.set_xlabel("Year")
+    ax.set_ylabel("ESG Score")
+    ax.grid(True)
+    
+    # Embed the chart into the Tkinter frame
+    canvas = FigureCanvasTkAgg(fig, master=chart_frame)
+
+    canvas.draw()
+
+    # Display the chart in the frame
     canvas.get_tk_widget().pack(fill="both", expand=True, padx=15, pady=(5,15))
-        
+
 
 # Show analized Company on Dashboard        
-
 def show_selected_company():
     
     # Get selected company from dropdown
@@ -129,10 +185,10 @@ def show_selected_company():
             
             env, soc, gov, latest_esg_score = Analyzer.calculate_esg_score(last_entry)
 
-            env_score.config(text=f"{env:.2f}%")
-            soc_score.config(text=f"{soc:.2f}")
-            gov_score.config(text=f"{gov:.2f}")
-            total_score.config(text=f"{latest_esg_score:.2f}")  
+            env_score.config(text=f"{env:.2f} %")
+            soc_score.config(text=f"{soc:.2f} %")
+            gov_score.config(text=f"{gov:.2f} %")
+            total_score.config(text=f"{latest_esg_score:.2f} %")  
 
             # Determine and display ESG trend
             if len(company.data) > 1:
@@ -176,52 +232,15 @@ def show_selected_company():
             # Update dashboard
             show_trend_chart(company)
             show_ranking(selected_name)
-            show_comparison_chart()
+            show_comparison_chart(selected_name)
 
             # Make company details read-only
             output_text.config(state="disabled")            
 
             break
-
-# Show Trend Chart
-def show_trend_chart(company):
-    
-    # Remove previous chart before drawing a new one
-    for widget in chart_frame.winfo_children():
-        widget.destroy()  
-
-    years = []
-    scores = []
-
-    # collect ESG scores for each year
-    for entry in company.data:
-        _, _, _, esg_score = Analyzer.calculate_esg_score(entry)
-        years.append(str(entry["year"]))
-        scores.append(esg_score)
-    
-    # Create matplotlib figure and plotting area
-    fig = Figure(figsize=(5, 4), dpi=100)
-    ax = fig.add_subplot(111)
-    
-    # Create ESG trend line chart with circular marker for each data point
-    ax.plot(years, scores, marker="o")
-
-    # Configure chart labels and appearance
-    ax.set_title(f"ESG Score over Years - {company.name}", fontsize=10, font="Arial")
-    ax.set_xlabel("Year")
-    ax.set_ylabel("ESG Score")
-    ax.grid(True)
-    
-    # Embed the chart into the Tkinter frame
-    canvas = FigureCanvasTkAgg(fig, master=chart_frame)
-
-    canvas.draw()
-
-    # Display the chart in the frame
-    canvas.get_tk_widget().pack(fill="both", expand=True, padx=15, pady=(5,15))
     
 
-# GUI window
+# GUI Window
 
 # Initialize root widget
 root = tk.Tk()  
@@ -291,7 +310,7 @@ env_title.pack(pady=10)
 env_score = tk.Label(env_card, text="0.00", bg="white", fg="#3BB96D", font=("Arial", 24, "bold"))   
 env_score.pack()
 
-# social card:
+# Social card:
 soc_card = ctk.CTkFrame(cards_frame, width=170, height=100, fg_color="white", border_width=1, border_color="#e0e2e6", corner_radius=10)
 soc_card.pack(side="left", padx=10)
 soc_card.pack_propagate(False)
