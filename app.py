@@ -1,17 +1,17 @@
-# tkinter for GUI components and ttk for advanced widgets like Combobox and Treeview
+# Tkinter for GUI components and ttk (Tk themed) for advanced widgets like Combobox and Treeview
 import tkinter as tk
 from tkinter import ttk
 
-# pathlib to handle filesystem paths
+# Pathlib to handle filesystem paths
 from pathlib import Path
 # json for loading ESG data from JSON files
 import json
 
-# matplotlib integration for displaying charts inside Tkinter frames 
+# Matplotlib integration for displaying charts inside Tkinter frames 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
-# customtkinter for modern styled Tkinter widgets and UI components
+# Customtkinter for modern styled Tkinter widgets and UI components
 import customtkinter as ctk
 
 
@@ -27,7 +27,7 @@ path = Path.cwd() / FILE_NAME
 
 try:
     with path.open(mode="r") as file:
-        data = json.load(file)                # Convert JSON data to a Python object
+        data = json.load(file)                
         print("*** Data loaded successfully ***\n")
         print("Number of companies:", len(data))
 except FileNotFoundError:
@@ -80,13 +80,13 @@ def show_comparison_chart():
     fig = Figure(figsize=(8,4), dpi=100)      #  Figure size and resolution
 
     # Adjust the left boundary
-    fig.subplots_adjust(left=0.23)            # start at 23 % of the figure's total width, measured from the left margin     
+    fig.subplots_adjust(left=0.25)            # start at 25 % of the figure's total width, measured from the left margin     
     
     # create a single plotting area for the chart
     ax = fig.add_subplot(111)                         # (row, column, Diagramm) inside the figure
 
-    ax.set_title("Company ESG Comparison", fontsize=9)
-    ax.set_xlabel("ESG Score", fontsize=9)
+    ax.set_title("Company ESG Comparison", fontsize=9, font="Arial")
+    ax.set_xlabel("ESG Score", fontsize=9, font="Arial")
     ax.set_xlim(0, 100)                               # limit for ESG score 0 - 100
 
     # create horizantal bar plot
@@ -207,7 +207,7 @@ def show_trend_chart(company):
     ax.plot(years, scores, marker="o")
 
     # Configure chart labels and appearance
-    ax.set_title(f"ESG Score over Years - {company.name}", fontsize=10)
+    ax.set_title(f"ESG Score over Years - {company.name}", fontsize=10, font="Arial")
     ax.set_xlabel("Year")
     ax.set_ylabel("ESG Score")
     ax.grid(True)
@@ -361,7 +361,7 @@ chart_title = ctk.CTkLabel(chart_frame, text="Charts", font=("Arial", 14, "bold"
 chart_title.pack(pady=10)
 
 # Company Details Output:
-output_text = tk.Text(details_frame, font=("Consolas", 11), bg="white", fg="#1f2933", relief="flat", borderwidth=0)
+output_text = tk.Text(details_frame, font=("Arial", 11), bg="white", fg="#1f2933", relief="flat", borderwidth=0)
 
 # Text formatting tags
 output_text.tag_configure("company", font=("Arial", 16, "bold"), foreground="#2e7d32")
@@ -381,7 +381,10 @@ output_text.pack(fill="both", expand=True, padx=12, pady=(0, 12))
 # Ranking table:
 # Configure Treeview style
 style = ttk.Style()
+
+# Use the clam theme to enable custom Treeview styling
 style.theme_use("clam")
+
 style.configure("Treeview", borderwidth=0, relief="flat", rowheight=30)
 
 # Remove default Treeview border
