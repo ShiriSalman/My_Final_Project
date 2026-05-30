@@ -92,7 +92,7 @@ def show_comparison_chart(selected_name):
     fig = Figure(figsize=(8,4), dpi=100)      #  Figure size and resolution
 
     # Adjust the left boundary
-    fig.subplots_adjust(left=0.24)            # start at 24 % of the figure's total width, measured from the left margin     
+    fig.subplots_adjust(left=0.30)            # start at 24 % of the figure's total width, measured from the left margin     
     
     # Adjust the bottom boundary
     fig.subplots_adjust(bottom=0.20)          
@@ -106,7 +106,7 @@ def show_comparison_chart(selected_name):
     ax.set_xlim(0, 100)                               # limit for ESG score 0 - 100
 
     # Create horizantal bar plot
-    ax.barh(company_names, scores, height=0.40, color=bar_colors)
+    ax.barh(company_names, scores, height=0.45, color=bar_colors)
 
     # Create transparent dashed lines
     ax.grid(axis="x", linestyle="--", alpha=0.4)
@@ -270,7 +270,7 @@ analyze_button = tk.Button(sidebar, text="Analyze Company", width=18, height=1, 
                  activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0, command=show_selected_company)
 analyze_button.pack(pady=10)
 
-analyze_all_button = tk.Button(sidebar, text="Analyze all Companies", width=18, height=1, font=("Arial", 11, "bold"), bg="#2BA664",
+""" analyze_all_button = tk.Button(sidebar, text="Analyze all Companies", width=18, height=1, font=("Arial", 11, "bold"), bg="#2BA664",
                      fg="white", activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0)
 analyze_all_button.pack(pady=10)
 
@@ -284,7 +284,11 @@ show_trends_button.pack(pady=10)
 
 refresh_data_button = tk.Button(sidebar, text="Refresh Data", width=18, height=1, font=("Arial", 11, "bold"), bg="#718193", fg="white",
                      activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0)
-refresh_data_button.pack(pady=10)
+refresh_data_button.pack(pady=10)  """
+
+exit_button = tk.Button(sidebar, text="Exit", width=18, height=1, font=("Arial", 11, "bold"), bg="#03A1AE", fg="white",
+                     activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0, command=root.destroy)
+exit_button.pack(pady=10)
 
 # Main frame left
 
@@ -385,7 +389,7 @@ output_text = tk.Text(details_frame, font=("Arial", 11), bg="white", fg="#1f2933
 # Text formatting tags
 output_text.tag_configure("company", font=("Arial", 16, "bold"), foreground="#2e7d32")
 output_text.tag_configure("year", font=("Arial", 12, "bold"))
-output_text.tag_configure("rating_good", foreground="green", font=("Arial", 11, "bold"))
+output_text.tag_configure("rating", foreground="green", font=("Arial", 11, "bold"))
 output_text.tag_configure("trend", foreground="#1565c0", font=("Arial", 11, "bold"))
 output_text.tag_configure("line", foreground="grey")
 
