@@ -94,19 +94,19 @@ The application design, ESG scoring model, project structure, implementation, te
 
 Resources Used:
 
-https://www.w3schools.com/python/python_dictionaries.asp
-https://www.learnpython.org/
-https://www.pythonguis.com/tutorials/create-ui-with-tkinter-grid-layout-manager/
-https://docs.python.org/3/library/tkinter.ttk.html
-https://tkdocs.com/tutorial/tree.html
-https://customtkinter.tomschimansky.com/documentation/widgets/combobox/
-https://customtkinter.tomschimansky.com/tutorial/frames/
-https://stackoverflow.com/questions/79930157/how-to-delete-every-widget-in-tkinter
-https://www.w3schools.com/PYTHON/matplotlib_pyplot.asp
-https://tkdocs.com/tutorial/styles.html
-https://www.pythontutorial.net/tkinter/tkinter-matplotlib/
-https://matplotlib.org/stable/tutorials/index.html
-https://realpython.com/search?q=gui
+- https://www.w3schools.com/python/python_dictionaries.asp
+- https://www.learnpython.org/
+- https://www.pythonguis.com/tutorials/create-ui-with-tkinter-grid-layout-manager/
+- https://docs.python.org/3/library/tkinter.ttk.html
+- https://tkdocs.com/tutorial/tree.html
+- https://customtkinter.tomschimansky.com/documentation/widgets/combobox/
+- https://customtkinter.tomschimansky.com/tutorial/frames/
+- https://stackoverflow.com/questions/79930157/how-to-delete-every-widget-in-tkinter
+- https://www.w3schools.com/PYTHON/matplotlib_pyplot.asp
+- https://tkdocs.com/tutorial/styles.html
+- https://www.pythontutorial.net/tkinter/tkinter-matplotlib/
+- https://matplotlib.org/stable/tutorials/index.html
+- https://realpython.com/search?q=gui
 
 Author
 Shireen Alsalman
