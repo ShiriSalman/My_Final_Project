@@ -28,31 +28,27 @@ Technologies Used:
 
 Installation:
 
-1. Clone the repository
+1. Clone the repository: 
 git clone https://github.com/ShiriSalman/My_Final_Project.git
 
-2. Create virtual environment
+2. Create virtual environment:
 python -m venv .venv
 
-3. Activate virtual environment
+3. Activate virtual environment:
 
 - Windows:
-   powershell ---> .venv\Scripts\Activate.ps1
-   cmd        ---> .venv\Scripts\activate.bat
-   bash       ---> source .venv/Scripts/activate
+   powershell:  .venv\Scripts\Activate.ps1
+   cmd:         .venv\Scripts\activate.bat
+   bash:        source .venv/Scripts/activate
 
-- MacOS / Linux
-source .venv/bin/activate
+- MacOS / Linux: source .venv/bin/activate
 
-4. Install dependencies
-pip install -r requirements.txt
+4. Install dependencies: pip install -r requirements.txt
 
 5. Run the application
-Run the GUI Application:
-python app.py
 
-Run the CLI Version:
-python main.py
+Run the GUI Application: python app.py
+Run the CLI Version: python main.py
 
 Dashboard Components:
 
