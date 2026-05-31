@@ -1,9 +1,9 @@
-# import libraries
+# Import libraries
 
 from pathlib import Path
 import json
 
-# import Classes
+# Import Classes
 
 from analyzer import Company
 from analyzer import Analyzer
@@ -26,8 +26,7 @@ except Exception as e:
 
 print()
 
-# create a list of company objects:
-
+# Create a list of company objects:
 company_list = []
 for item in data:
     new_company = Company(item["company"], item["data"])
@@ -36,8 +35,7 @@ for item in data:
 analyzer = Analyzer(company_list)   
 
    
-# main menu:
-
+# Main Menu:
 def menu(): 
     while True:
         print("=" * 25)
@@ -46,7 +44,7 @@ def menu():
 
         print()
 
-        # menu options:
+        # Menu options:
 
         print("1. Analyze all companies")
         print("2. Analyze one Company")

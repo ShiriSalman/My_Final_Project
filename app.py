@@ -54,20 +54,19 @@ def show_ranking(selected_name):
 
     ranking_list = analyzer.ranking()
 
-    # Delete old lines
+    # Delete previous Ranking
     for item in ranking_table.get_children():
         ranking_table.delete(item)
 
     for i, (name, score) in enumerate(ranking_list, start=1):
         tag = "selected" if name == selected_name else ""
         # Insert the new line as normal main line (without parent) at the end of ranking_tabel
-        ranking_table.insert("", "end", values=(i, name, f"{score:.2f}"), tags=(tag,))  # insert the new line as normal main line (without parent) at the end of tabel
-
+        ranking_table.insert("", "end", values=(i, name, f"{score:.2f}"), tags=(tag,))  
 
 # Show Comparison Chart
 def show_comparison_chart(selected_name):
 
-    # remove the previous chart before creating a new one
+    # Remove previous chart before creating a new one
     for widget in comparison_frame.winfo_children():
       widget.destroy() 
     
@@ -184,7 +183,8 @@ def show_selected_company():
             year_label.config(text=f"Scores shown for: {last_entry['year']}")
             
             env, soc, gov, latest_esg_score = Analyzer.calculate_esg_score(last_entry)
-
+            
+            # Update ESG score cards with latest company scores
             env_score.config(text=f"{env:.2f} %")
             soc_score.config(text=f"{soc:.2f} %")
             gov_score.config(text=f"{gov:.2f} %")
@@ -269,22 +269,6 @@ company_dropdown.current(0)               # Show first entry in Company_names
 analyze_button = tk.Button(sidebar, text="Analyze Company", width=18, height=1, font=("Arial", 11, "bold"), bg="#2673D9", fg="white",
                  activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0, command=show_selected_company)
 analyze_button.pack(pady=10)
-
-""" analyze_all_button = tk.Button(sidebar, text="Analyze all Companies", width=18, height=1, font=("Arial", 11, "bold"), bg="#2BA664",
-                     fg="white", activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0)
-analyze_all_button.pack(pady=10)
-
-show_ranking_button = tk.Button(sidebar, text="Show Ranking", width=18, height=1, font=("Arial", 11, "bold"), bg="#8E67D8", fg="white",
-                      activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0, command=show_ranking)
-show_ranking_button.pack(pady=10)
-
-show_trends_button = tk.Button(sidebar, text="Show Trends", width=18, height=1, font=("Arial", 11, "bold"), bg="#03A1AE", fg="white",
-                     activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0)
-show_trends_button.pack(pady=10)
-
-refresh_data_button = tk.Button(sidebar, text="Refresh Data", width=18, height=1, font=("Arial", 11, "bold"), bg="#718193", fg="white",
-                     activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0)
-refresh_data_button.pack(pady=10)  """
 
 exit_button = tk.Button(sidebar, text="Exit", width=18, height=1, font=("Arial", 11, "bold"), bg="#03A1AE", fg="white",
                      activebackground="#b0c1e7", activeforeground="white", relief="flat", bd=0, command=root.destroy)
@@ -414,7 +398,7 @@ style.configure("Treeview", borderwidth=0, relief="flat", rowheight=30)
 style.layout("Treeview", [("Treeview.treearea", {"sticky": "nswe"})])
 
 # Configure table header style
-style.configure("Treeview.Heading", background="white", foreground="#1f2933", font=("Arial", 10, "bold"), relief="flat")
+style.configure("Treeview.Heading", background="white", foreground="#222f3d", font=("Arial", 10, "bold"), relief="flat")
 
 # Ranking table displaying company ESG scores
 ranking_table = ttk.Treeview(ranking_frame, columns=("rank", "company", "score"), show="headings", height=5)
